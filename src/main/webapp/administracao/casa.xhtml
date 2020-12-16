@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      template="/template/layout.xhtml">
+    	
+	<ui:define name="header">
+		<h1>Controle de Casa</h1>
+		<hr />
+	</ui:define>
+	<style>
+		.painelBotoes {
+			margin-top: 10px;
+			border-top: 1px solid #d3d3d3;
+			clear: both;
+			width: 115px;
+		}
+	</style>
+		
+	<ui:define name="content">
+   		<p:outputPanel id="idPesquisa" layout="block" rendered="#{casaMB.pesquisando}">
+			<div class="ui-fluid" >
+				<h:panelGrid columns="4" cellpadding="5">
+					<p:outputLabel value="Código" />
+					<p:inputNumber id="idFiltroCodigo" value="#{casaMB.filtroCodigo}"/>
+					<p:outputLabel value="Número" />
+					<p:inputNumber />
+				</h:panelGrid>
+				<hr />
+				<p:outputPanel styleClass="painelBotoes">
+					<p:commandButton id="idBtPesquisa" value="Pesquisar" style="width: 115px; margin-top: 5px;border-top: 1px solid #d3d3d3;clear: both;"
+						 process="@this idFiltroCodigo" action="#{casaMB.acaoPesquisar()}" update="idCasaList"> 
+					</p:commandButton>
+					<p:commandButton id="idBtLimpar" value="Limpar" style="width: 115px; margin-top: 5px;border-top: 1px solid #d3d3d3;clear: both;"
+						 process="@this " action="#{casaMB.acaoLimparFiltro()}" update="idPesquisa"> 
+					</p:commandButton>
+				</p:outputPanel>
+				<br />
+			</div>
+			<p:dataTable id="idCasaList" styleClass="resultados" var="item" value="#{casaMB.casaList}" rows="10" emptyMessage="Nenhum registro encontrado" paginator="true"
+				paginatorPosition="bottom" paginatorTemplate="${label['geral.template.grid.paginacao']}" rowIndexVar="linha"
+				currentPageReportTemplate="${label['geral.template.grid.paginaAtual']}">
+				<p:column colspan="1" headerText="Código" styleClass="centralizarTexto">
+					<h:outputText value="${item.numSequencial}" />
+				</p:column>
+				<p:column colspan="1" headerText="Bairro" styleClass="centralizarTexto">
+					<h:outputText value="${item.bairro}"/>
+				</p:column>
+				<p:column colspan="2" headerText="Rua" styleClass="centralizarTexto">
+					<h:outputText value="${item.rua}"/>
+				</p:column>
+				<p:column headerText="Número" styleClass="centralizarTexto">
+					<h:outputText value="${item.numero}" />
+				</p:column>
+				<p:column headerText="Observação" styleClass="centralizarTexto">
+					<h:outputText value="${item.observacao}" />
+				</p:column>
+			</p:dataTable>
+			<p:outputPanel >
+				<hr />
+				<p:commandButton id="idBtNovo" value="Novo" style="margin-top: 5px; border-top: 1px solid #d3d3d3; clear: both; width: 115px;"
+					 process="@this" action="#{casaMB.navCadastrar()}" update="mainContent"> 
+				</p:commandButton>
+			</p:outputPanel>
+		</p:outputPanel>
+		
+		<p:outputPanel rendered="${not casaMB.pesquisando}" id="idDados" styleClass="ui-fluid"> 
+			<h:panelGrid columns="4" cellpadding="5">
+				<p:outputLabel value="Código" />
+				<p:inputText value="${casaMB.casa.numSequencial}" disabled="true" />
+				<p:outputLabel value="Rua" />
+				<p:inputText value="#{casaMB.casa.rua}" disabled="${casaMB.visualizando}" title="${casaMB.casa.rua}" />
+			</h:panelGrid>
+			<p:outputPanel >
+				<hr />
+				<p:commandButton id="idBtVoltar" value="Voltar para Pesquisa" style="margin-top: 5px; border-top: 1px solid #d3d3d3; clear: both; width: 220px;"
+					 process="@this idDados" actionListener="#{casaMB.navPesquisar()}" update="mainContent"> 
+				</p:commandButton>
+				<p:commandButton id="idBtSalvar" value="Salvar" style="margin-top: 5px; border-top: 1px solid #d3d3d3; clear: both; width: 115px;"
+					 process="@this idDados" actionListener="#{casaMB.acaoSalvar()}" > 
+				</p:commandButton>
+			</p:outputPanel>
+		</p:outputPanel>
+    			
+	</ui:define>
+    		
+ 	<ui:define name="footer">
+  		
+  	</ui:define>
+
+
+</ui:composition>

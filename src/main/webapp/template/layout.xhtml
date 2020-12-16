@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      >
+
+    <h:head>
+    </h:head>
+
+    <h:body>
+		<div id="page" style="background-color: #B0E0E6;">
+		    <div id="header" style="width: 960px; margin-left: 23%;">
+				  <p:menubar>
+			        <p:submenu label="Cadastro" icon="pi pi-file">
+			            <p:menuitem value="Casa" url="http://localhost:8080/prova/administracao/casa.xhtml" />
+			            <p:menuitem value="Condomínio" url="http://localhost:8080/prova/administracao/condominio.xhtml" />
+			            <p:menuitem value="Locatário" url="http://localhost:8080/prova/administracao/locatario.xhtml" />
+			            <p:separator />
+			            <p:menuitem value="Sair" url="http://localhost:8080/" />
+			        </p:submenu>
+			     </p:menubar>
+				<ui:insert name="header" >
+				  <ui:include src="/template/basicheader.xhtml" />
+				</ui:insert>
+		    </div>
+			<h:form id="mainContent" acceptcharset="utf-8" enctype="multipart/form-data">
+			    <div id="content" style="width: 960px;margin-left: 23%;">
+			    	<p:messages id="messages" autoUpdate="true" closable="true" showSummary="false" showDetail="true" />
+				  	<ui:insert name="content" >
+				 	  <ui:include src="/template/basiccontent.xhtml" />
+				   	</ui:insert>
+			    </div>
+		    </h:form>
+	
+		    <div id="footer" style="width: 960px; margin-left: 23%;height: 300px;">
+<!-- 		    		<p:outputLabel >Desenvolvido por Glailson Leoncio</p:outputLabel> -->
+		    	<ui:insert name="footer" >
+<!-- 		    	  <ui:include src="/template/basicfooter.xhtml" /> -->
+		    	</ui:insert>
+	   	    </div>
+	
+	      </div>
+
+    </h:body>
+</html>
