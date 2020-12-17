@@ -11,6 +11,7 @@
 		<hr />
 		
 	</ui:define>
+	
 	<style>
 		.painelBotoes {
 			margin-top: 10px;
@@ -21,9 +22,15 @@
 	</style>
 		
 	<ui:define name="content">
+		
 		<h3>
 			<h:outputText value="${casaMB.subTitulo}" />
 		</h3>
+		<style>
+			.centralizarTexto {
+				text-align: center;
+			}
+		</style>
    		<p:outputPanel id="idPesquisa" layout="block" rendered="#{casaMB.pesquisando}">
 			<div class="ui-fluid" >
 				<h:panelGrid columns="3" cellpadding="5">
@@ -63,33 +70,35 @@
 				</p:outputPanel>
 				<br />
 			</div>
-			<p:dataTable id="idCasaList" styleClass="resultados" var="item" value="#{casaMB.casaList}" rows="10" emptyMessage="Nenhum registro encontrado" paginator="true"
+			<p:dataTable id="idCasaList" styleClass="resultados" var="item" value="#{casaMB.casaRsList}" rows="10" emptyMessage="Nenhum registro encontrado" paginator="true"
 				paginatorPosition="bottom" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowIndexVar="linha"
 				currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords}">
-				<p:column colspan="1" headerText="Código" style="text-align: center;">
+				<p:column colspan="1" headerText="Código" styleClass="centralizarTexto">
 					<h:outputText value="${item.numSequencial}" />
 				</p:column>
-				<p:column colspan="1" headerText="Bairro" style="text-align: center;">
+				<p:column colspan="1" headerText="Cidade" styleClass="centralizarTexto">
+					<h:outputText value="${item.cidade}"/>
+				</p:column>
+				<p:column colspan="1" headerText="Bairro" styleClass="centralizarTexto">
 					<h:outputText value="${item.bairro}"/>
 				</p:column>
-				<p:column colspan="2" headerText="Rua" style="text-align: center;">
+				<p:column colspan="2" headerText="Rua" styleClass="centralizarTexto">
 					<h:outputText value="${item.rua}"/>
 				</p:column>
-				<p:column headerText="Número" style="text-align: center;">
+				<p:column headerText="Número" styleClass="centralizarTexto">
 					<h:outputText value="${item.numero}" />
 				</p:column>
-				<p:column headerText="Observação" style="text-align: center;">
-					<h:outputText value="${item.observacao}" />
-				</p:column>
-				<p:column headerText="Ações" style="text-align: center;">
-					<p:commandLink action="#{casaMB.navVisualizar()}" value="Visualizar" update="mainContent" styleClass="fa fa-lg fa-green fa-search-plus"> 
-						<f:setPropertyActionListener value="#{item}" target="#{casaMB.casaSelecionada}"/>
+<!-- 				<p:column headerText="Observação" style="text-align: center;"> -->
+<!-- 					<h:outputText value="${item.observacao}" /> -->
+<!-- 				</p:column> -->
+				<p:column headerText="Ações" styleClass="centralizarTexto">
+					<p:commandLink action="#{casaMB.navVisualizar()}" value="Visualizar  " update="mainContent" styleClass="fa fa-lg fa-green fa-search-plus"> 
+						<f:setPropertyActionListener value="#{item}" target="#{casaMB.casaSelecionadaRs}"/>
 					</p:commandLink>
 					<p:commandLink action="#{casaMB.navEditar()}" value="Editar" update="mainContent" styleClass="fa fa-lg fa-green fa-search-plus"> 
-						<f:setPropertyActionListener value="#{item}" target="#{casaMB.casaSelecionada}"/>
+						<f:setPropertyActionListener value="#{item}" target="#{casaMB.casaSelecionadaRs}"/>
 					</p:commandLink>
 				</p:column>
-				
 			</p:dataTable>
 			<p:outputPanel >
 				<hr />
@@ -119,15 +128,18 @@
 				</p:row>
 				<p:row>
 					<p:outputLabel value="Cidade" />
-					<p:inputText value="#{casaMB.casa.cidade}" disabled="${casaMB.visualizando}" title="${casaMB.casa.cidade}"/>
+					<p:inputText value="#{casaMB.casa.cidade}" disabled="${casaMB.visualizando}" title="${casaMB.casa.cidade}"
+						required="#{casaMB.cadastrando or casaMB.editando}" requiredMessage="Campo 'Cidade' obrigatório."/>
 				</p:row>
 				<p:row>
 					<p:outputLabel value="Bairro" />
-					<p:inputText value="#{casaMB.casa.bairro}" disabled="${casaMB.visualizando}" title="${casaMB.casa.bairro}" />
+					<p:inputText value="#{casaMB.casa.bairro}" disabled="${casaMB.visualizando}" title="${casaMB.casa.bairro}"
+					 	required="#{casaMB.cadastrando or casaMB.editando}" requiredMessage="Campo 'Bairro' obrigatório."/>
 				</p:row>
 				<p:row>
 					<p:outputLabel value="Rua" />
-					<p:inputText value="#{casaMB.casa.rua}" disabled="${casaMB.visualizando}" title="${casaMB.casa.rua}" />
+					<p:inputText value="#{casaMB.casa.rua}" disabled="${casaMB.visualizando}" title="${casaMB.casa.rua}" 
+						required="#{casaMB.cadastrando or casaMB.editando}" requiredMessage="Campo 'Rua' obrigatório."/>
 				</p:row>
 				<p:row>
 					<p:outputLabel value="Número" />
@@ -147,7 +159,7 @@
 			<p:outputPanel >
 				<hr />
 				<p:commandButton id="idBtVoltar" value="Voltar para Pesquisa" style="margin-top: 5px; border-top: 1px solid #d3d3d3; clear: both; width: 210px;"
-					 process="@this idDados" actionListener="#{casaMB.navVoltarParaPesquisa()}" update="mainContent"> 
+					 process="@this" actionListener="#{casaMB.navVoltarParaPesquisa()}" update="mainContent"> 
 				</p:commandButton>
 				<p:commandButton id="idBtSalvar" value="${casaMB.labelBtSalvar}" style="margin-top: 5px; border-top: 1px solid #d3d3d3; clear: both; width: 190px;"
 					 process="@this idDados" actionListener="#{casaMB.acaoSalvar()}" update="mainContent" rendered="#{casaMB.cadastrando or casaMB.editando}"> 

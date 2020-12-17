@@ -6,6 +6,7 @@ import javax.ejb.Stateless;
 
 import br.com.DAO.CasaDAO;
 import br.com.model.Casa;
+import br.com.model.resultset.CasaRS;
 
 @Stateless
 public class CasaBean extends GenericBean<Casa> {
@@ -31,6 +32,10 @@ public class CasaBean extends GenericBean<Casa> {
 	
 	public List<Casa> pesquisar(Long filtroCodigo, String filtroCidade, String filtroBairro, String filtroRua) {
 		return getCasaDAO().pesquisar(filtroCodigo, filtroCidade, filtroBairro, filtroRua);
+	}
+	
+	public List<CasaRS> pesquisarRs(Long filtroCodigo, String filtroCidade,String filtroBairro,String filtroRua) {
+		return getCasaDAO().pesquisarRs(filtroCodigo, filtroCidade, filtroBairro, filtroRua);
 	}
 
 }

@@ -35,7 +35,7 @@ public class Casa implements GenericEntity<Long> {
 	@Size(max=100)
     @Column(name="cacidade")
     private String cidade;
-	@Size(max=100)
+	@Size(max=255)
     @Column(name="caobservacao")
     private String observacao;
 	@Column(name="canumero")

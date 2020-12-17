@@ -19,6 +19,7 @@
 			        <p:submenu label="Cadastro" icon="pi pi-file">
 			            <p:menuitem value="Casa" url="http://localhost:8080/prova/administracao/casa.xhtml" />
 			            <p:menuitem value="Condomínio" url="http://localhost:8080/prova/administracao/condominio.xhtml" />
+			            <p:menuitem value="Inquilino" url="http://localhost:8080/prova/administracao/inquilino.xhtml" />
 			            <p:menuitem value="Locatário" url="http://localhost:8080/prova/administracao/locatario.xhtml" />
 			            <p:separator />
 			            <p:menuitem value="Sair" url="http://localhost:8080/" />
@@ -28,7 +29,7 @@
 				  <ui:include src="/template/basicheader.xhtml" />
 				</ui:insert>
 		    </div>
-			<h:form id="mainContent" acceptcharset="utf-8" enctype="multipart/form-data">
+			<h:form id="mainContent" acceptcharset="utf-8" enctype="multipart/form-data" style="font-family: 'FontAwesome';">
 				<p:growl id="growl" showDetail="true" showSummary="false" autoUpdate="true" /> 
 				<p:messages id="messages" autoUpdate="true" closable="true" showSummary="false" showDetail="true" showIcon="false" style="padding-block-end: 2px;width: 960px;margin-left: 23%;" />
 			    <div id="content" style="width: 960px;margin-left: 23%;">

@@ -7,20 +7,18 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
 
 import br.com.ejb.CasaBean;
 import br.com.model.Casa;
 import br.com.model.Casa.StatusCasa;
 import br.com.model.Util;
+import br.com.model.resultset.CasaRS;
 
 @ManagedBean
 @ViewScoped
 public class CasaMB extends MainMB implements Serializable {
-	
 	private static final long serialVersionUID = -5863896267107674488L;
 	
 	@EJB
@@ -29,8 +27,8 @@ public class CasaMB extends MainMB implements Serializable {
 	// CONTROLE DE TELA
 	private Acao acaoAtual;
 	private Casa casa;
-	private Casa casaSelecionada;
-	private List<Casa> casaList;
+	private CasaRS casaSelecionadaRs;
+	private List<CasaRS> casaRsList;
 	private String subTitulo, labelBtSalvar;
 	//FILTROS
 	private Long filtroCodigo;
@@ -58,8 +56,8 @@ public class CasaMB extends MainMB implements Serializable {
 					labelBtSalvar = "Salvar Alterações";
 				} 
 				if (casa == null) {
-					if (casaSelecionada != null) {
-						casa = casaBean.pegar(casaSelecionada.getNumSequencial());
+					if (casaSelecionadaRs != null) {
+						casa = casaBean.pegar(casaSelecionadaRs.getNumSequencial());
 					}
 				}
 			}
@@ -79,7 +77,7 @@ public class CasaMB extends MainMB implements Serializable {
 	}
 	
 	public void acaoPesquisar () {
-		casaList = casaBean.pesquisar(filtroCodigo, filtroCidade, filtroBairro, filtroRua);
+		casaRsList = casaBean.pesquisarRs(filtroCodigo, filtroCidade, filtroBairro, filtroRua);
 	}
 	
 	public void acaoLimparFiltro() {
@@ -87,9 +85,9 @@ public class CasaMB extends MainMB implements Serializable {
 		filtroCidade = null;
 		filtroBairro = null;
 		filtroRua = null;
-		casaSelecionada = null;
-		if (Util.validaListDefault(casaList)) {
-			casaList.clear();
+		casaSelecionadaRs = null;
+		if (Util.validaListDefault(casaRsList)) {
+			casaRsList.clear();
 		}
 	}
 	
@@ -99,7 +97,7 @@ public class CasaMB extends MainMB implements Serializable {
 	
 	public void navVoltarParaPesquisa() {
 		casa = null;
-		casaSelecionada = null;
+		casaSelecionadaRs = null;
 		render(Acao.pesquisar);
 	}
 	
@@ -148,12 +146,12 @@ public class CasaMB extends MainMB implements Serializable {
 		this.casa = casa;
 	}
 
-	public List<Casa> getCasaList() {
-		return casaList;
+	public List<CasaRS> getCasaRsList() {
+		return casaRsList;
 	}
 
-	public void setCasaList(List<Casa> casaList) {
-		this.casaList = casaList;
+	public void setCasaRsList(List<CasaRS> casaRsList) {
+		this.casaRsList = casaRsList;
 	}
 
 	public Long getFiltroCodigo() {
@@ -192,12 +190,12 @@ public class CasaMB extends MainMB implements Serializable {
 		this.filtroBairro = filtroBairro;
 	}
 
-	public Casa getCasaSelecionada() {
-		return casaSelecionada;
+	public CasaRS getCasaSelecionadaRs() {
+		return casaSelecionadaRs;
 	}
 
-	public void setCasaSelecionada(Casa casaSelecionada) {
-		this.casaSelecionada = casaSelecionada;
+	public void setCasaSelecionadaRs(CasaRS casaSelecionadaRs) {
+		this.casaSelecionadaRs = casaSelecionadaRs;
 	}
 
 	public String getLabelBtSalvar() {
