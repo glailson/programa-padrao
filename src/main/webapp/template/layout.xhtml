@@ -9,6 +9,7 @@
       >
 
     <h:head>
+    	
     </h:head>
 
     <h:body>
@@ -28,8 +29,9 @@
 				</ui:insert>
 		    </div>
 			<h:form id="mainContent" acceptcharset="utf-8" enctype="multipart/form-data">
+				<p:growl id="growl" showDetail="true" showSummary="false" autoUpdate="true" /> 
+				<p:messages id="messages" autoUpdate="true" closable="true" showSummary="false" showDetail="true" showIcon="false" style="padding-block-end: 2px;width: 960px;margin-left: 23%;" />
 			    <div id="content" style="width: 960px;margin-left: 23%;">
-			    	<p:messages id="messages" autoUpdate="true" closable="true" showSummary="false" showDetail="true" />
 				  	<ui:insert name="content" >
 				 	  <ui:include src="/template/basiccontent.xhtml" />
 				   	</ui:insert>

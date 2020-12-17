@@ -23,11 +23,14 @@ public class CasaBean extends GenericBean<Casa> {
 	}
 	
 	public Casa salvar(Casa casa) {
+		casa.setCidade(casa.getCidade().toUpperCase());
+		casa.setBairro(casa.getBairro().toUpperCase());
+		casa.setRua(casa.getRua().toUpperCase());
 		return getCasaDAO().update(casa);
 	}
 	
-	public List<Casa> pesquisar(Long filtroCodigo) {
-		return getCasaDAO().pesquisar(filtroCodigo);
+	public List<Casa> pesquisar(Long filtroCodigo, String filtroCidade, String filtroBairro, String filtroRua) {
+		return getCasaDAO().pesquisar(filtroCodigo, filtroCidade, filtroBairro, filtroRua);
 	}
 
 }

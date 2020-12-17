@@ -7,11 +7,15 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 
 import br.com.ejb.CasaBean;
 import br.com.model.Casa;
+import br.com.model.Casa.StatusCasa;
+import br.com.model.Util;
 
 @ManagedBean
 @ViewScoped
@@ -25,9 +29,12 @@ public class CasaMB extends MainMB implements Serializable {
 	// CONTROLE DE TELA
 	private Acao acaoAtual;
 	private Casa casa;
+	private Casa casaSelecionada;
 	private List<Casa> casaList;
+	private String subTitulo, labelBtSalvar;
 	//FILTROS
 	private Long filtroCodigo;
+	private String filtroCidade, filtroBairro, filtroRua;
 	
 	@PostConstruct
 	private void init() { 
@@ -37,28 +44,51 @@ public class CasaMB extends MainMB implements Serializable {
 	private void render(Acao novaAcao) {
 		acaoAtual = novaAcao;
 		if (Acao.pesquisar.equals(acaoAtual)) {
-			casaList = new ArrayList<Casa>();
+			subTitulo = "Pesquisar Casa";
 		} else {
-			if (Acao.visualizar.equals(acaoAtual)) {
-			} else if (Acao.cadastrar.equals(acaoAtual)) {
+			if (Acao.cadastrar.equals(acaoAtual)) {
 				casa = new Casa();
+				subTitulo = "Cadastrar Casa";
+				labelBtSalvar = "Salvar";
+			} else  {
+				if (Acao.visualizar.equals(acaoAtual)){
+					subTitulo = "Visualizar Casa";
+				} else if (Acao.editar.equals(acaoAtual)) {
+					subTitulo = "Editar Casa";
+					labelBtSalvar = "Salvar Alterações";
+				} 
+				if (casa == null) {
+					if (casaSelecionada != null) {
+						casa = casaBean.pegar(casaSelecionada.getNumSequencial());
+					}
+				}
 			}
 		}
 	}
 	
 	public void acaoSalvar () {
 		casa.setDtHrCadastro(new Date());
-		casa.setNumero(null);
+		casa.setStatus(StatusCasa.ATIVA);
 		casa = casaBean.salvar(casa);
+		if (isCadastrando()) {
+			addInfoMessage("Cadastro realizado com sucesso.");
+		} else {
+			addInfoMessage("Alterações salvas com sucesso.");
+		}
+		navVisualizar();
 	}
 	
 	public void acaoPesquisar () {
-		casaList = casaBean.pesquisar(filtroCodigo);
+		casaList = casaBean.pesquisar(filtroCodigo, filtroCidade, filtroBairro, filtroRua);
 	}
 	
 	public void acaoLimparFiltro() {
 		filtroCodigo = null;
-		if (casaList != null && casaList.size() > 0) {
+		filtroCidade = null;
+		filtroBairro = null;
+		filtroRua = null;
+		casaSelecionada = null;
+		if (Util.validaListDefault(casaList)) {
 			casaList.clear();
 		}
 	}
@@ -67,8 +97,31 @@ public class CasaMB extends MainMB implements Serializable {
 		render(Acao.pesquisar);
 	}
 	
+	public void navVoltarParaPesquisa() {
+		casa = null;
+		casaSelecionada = null;
+		render(Acao.pesquisar);
+	}
+	
 	public void navCadastrar() {
 		render(Acao.cadastrar);
+	}
+	
+	public void navVisualizar() {
+		render(Acao.visualizar);
+	}
+	
+	public void navEditar() {
+		render(Acao.editar);
+	}
+	
+	public List<StatusCasa> getStatusCasaList() {
+		List<StatusCasa> listaStatus = new ArrayList<>();
+		for(StatusCasa itemStatus: StatusCasa.values()) {
+			listaStatus.add(itemStatus);
+		}
+//		listaStatus.sort((StatusCasa o1, StatusCasa o2)->o1.getDescricao().compareTo(o2.getDescricao()));
+		return listaStatus;
 	}
 	
 	public boolean isPesquisando() {
@@ -77,6 +130,14 @@ public class CasaMB extends MainMB implements Serializable {
 	
 	public boolean isVisualizando() {
 		return Acao.visualizar.equals(acaoAtual);
+	}
+	
+	public boolean isCadastrando() {
+		return Acao.cadastrar.equals(acaoAtual);
+	}
+	
+	public boolean isEditando() {
+		return Acao.editar.equals(acaoAtual);
 	}
 	
 	public Casa getCasa() {
@@ -101,6 +162,46 @@ public class CasaMB extends MainMB implements Serializable {
 
 	public void setFiltroCodigo(Long filtroCodigo) {
 		this.filtroCodigo = filtroCodigo;
+	}
+
+	public String getSubTitulo() {
+		return subTitulo;
+	}
+
+	public String getFiltroCidade() {
+		return filtroCidade;
+	}
+
+	public void setFiltroCidade(String filtroCidade) {
+		this.filtroCidade = filtroCidade;
+	}
+
+	public String getFiltroRua() {
+		return filtroRua;
+	}
+
+	public void setFiltroRua(String filtroRua) {
+		this.filtroRua = filtroRua;
+	}
+
+	public String getFiltroBairro() {
+		return filtroBairro;
+	}
+
+	public void setFiltroBairro(String filtroBairro) {
+		this.filtroBairro = filtroBairro;
+	}
+
+	public Casa getCasaSelecionada() {
+		return casaSelecionada;
+	}
+
+	public void setCasaSelecionada(Casa casaSelecionada) {
+		this.casaSelecionada = casaSelecionada;
+	}
+
+	public String getLabelBtSalvar() {
+		return labelBtSalvar;
 	}
 
 	private static enum Acao {

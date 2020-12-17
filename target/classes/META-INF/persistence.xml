@@ -16,7 +16,7 @@
          	<property name="exclude-unlisted-classes" value="false" />
             <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/projeto" /> 
 	    	<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/> 
-	    	<property name="javax.persistence.schema-generation.database.action" value="create"/>
+	    	<property name="javax.persistence.schema-generation.database.action" value="update"/>
             <property name="hibernate.show_sql" value="true" /> 
             <property name="hibernate.format_sql" value="true" /> 
       </properties>

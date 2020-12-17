@@ -1,9 +1,12 @@
 package br.com.model;
 
 import java.util.Date;
+
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -11,6 +14,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
+
 import br.com.teste.prova.model.GenericEntity;
 
 @Entity
@@ -39,6 +43,9 @@ public class Casa implements GenericEntity<Long> {
 	@Column(name = "cadthrcadastro")
     @Temporal(TemporalType.TIMESTAMP)
 	private Date dtHrCadastro;
+	@Enumerated(EnumType.STRING)
+	@Column(name = "carsituacao")
+	private StatusCasa status;
 	
 	public Casa() {
 		// TODO Auto-generated constructor stub
@@ -96,6 +103,14 @@ public class Casa implements GenericEntity<Long> {
 		return dtHrCadastro;
 	}
 
+	public StatusCasa getStatus() {
+		return status;
+	}
+
+	public void setStatus(StatusCasa status) {
+		this.status = status;
+	}
+
 	public void setDtHrCadastro(Date dtHrCadastro) {
 		this.dtHrCadastro = dtHrCadastro;
 	}
@@ -123,6 +138,39 @@ public class Casa implements GenericEntity<Long> {
 		} else if (!numSequencial.equals(other.numSequencial))
 			return false;
 		return true;
+	}
+	
+	public static enum StatusCasa {
+		ATIVA(0L,"Ativa"),
+		INATIVA(1L,"Inativa");
+		
+		private Long numSequencial;
+		private String descricao;
+		
+		private StatusCasa() {
+		}
+		
+		private StatusCasa(Long numSequencial, String descricao) {
+			this.numSequencial = numSequencial;
+			this.descricao = descricao;
+		}
+		
+		public Long getNumSequencial() {
+			return numSequencial;
+		}
+		public void setNumSequencial(Long numSequencial) {
+			this.numSequencial = numSequencial;
+		}
+		public String getDescricao() {
+			return descricao;
+		}
+		public void setDescricao(String descricao) {
+			this.descricao = descricao;
+		}
+		
+		public String getProperty() {			
+			return "enum.statusRequisicaoClientePso." + name();	
+		}
 	}
 
 }

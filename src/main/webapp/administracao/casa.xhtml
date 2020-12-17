@@ -9,6 +9,7 @@
 	<ui:define name="header">
 		<h1>Controle de Casa</h1>
 		<hr />
+		
 	</ui:define>
 	<style>
 		.painelBotoes {
@@ -20,18 +21,41 @@
 	</style>
 		
 	<ui:define name="content">
+		<h3>
+			<h:outputText value="${casaMB.subTitulo}" />
+		</h3>
    		<p:outputPanel id="idPesquisa" layout="block" rendered="#{casaMB.pesquisando}">
 			<div class="ui-fluid" >
-				<h:panelGrid columns="4" cellpadding="5">
-					<p:outputLabel value="Código" />
-					<p:inputNumber id="idFiltroCodigo" value="#{casaMB.filtroCodigo}"/>
-					<p:outputLabel value="Número" />
-					<p:inputNumber />
+				<h:panelGrid columns="3" cellpadding="5">
+					<p:row>
+						<p:column>
+							<p:outputLabel value="Código" />
+							<p:inputNumber id="idFiltroCodigo" value="#{casaMB.filtroCodigo}"/>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<p:outputLabel value="Cidade" />
+							<p:inputText id="idFiltroCidade" value="#{casaMB.filtroCidade}" maxlength="20"/>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<p:outputLabel value="Bairro" />
+							<p:inputText id="idFiltroBairro" value="#{casaMB.filtroBairro}" maxlength="20"/> 
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<p:outputLabel value="Rua" />
+							<p:inputText id="idFiltroRua" value="#{casaMB.filtroRua}" maxlength="20"/> 
+						</p:column>
+					</p:row>
 				</h:panelGrid>
 				<hr />
 				<p:outputPanel styleClass="painelBotoes">
 					<p:commandButton id="idBtPesquisa" value="Pesquisar" style="width: 115px; margin-top: 5px;border-top: 1px solid #d3d3d3;clear: both;"
-						 process="@this idFiltroCodigo" action="#{casaMB.acaoPesquisar()}" update="idCasaList"> 
+						 process="@this idFiltroCodigo, idFiltroCidade, idFiltroBairro, idFiltroRua" action="#{casaMB.acaoPesquisar()}" update="idCasaList"> 
 					</p:commandButton>
 					<p:commandButton id="idBtLimpar" value="Limpar" style="width: 115px; margin-top: 5px;border-top: 1px solid #d3d3d3;clear: both;"
 						 process="@this " action="#{casaMB.acaoLimparFiltro()}" update="idPesquisa"> 
@@ -40,23 +64,32 @@
 				<br />
 			</div>
 			<p:dataTable id="idCasaList" styleClass="resultados" var="item" value="#{casaMB.casaList}" rows="10" emptyMessage="Nenhum registro encontrado" paginator="true"
-				paginatorPosition="bottom" paginatorTemplate="${label['geral.template.grid.paginacao']}" rowIndexVar="linha"
-				currentPageReportTemplate="${label['geral.template.grid.paginaAtual']}">
-				<p:column colspan="1" headerText="Código" styleClass="centralizarTexto">
+				paginatorPosition="bottom" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowIndexVar="linha"
+				currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords}">
+				<p:column colspan="1" headerText="Código" style="text-align: center;">
 					<h:outputText value="${item.numSequencial}" />
 				</p:column>
-				<p:column colspan="1" headerText="Bairro" styleClass="centralizarTexto">
+				<p:column colspan="1" headerText="Bairro" style="text-align: center;">
 					<h:outputText value="${item.bairro}"/>
 				</p:column>
-				<p:column colspan="2" headerText="Rua" styleClass="centralizarTexto">
+				<p:column colspan="2" headerText="Rua" style="text-align: center;">
 					<h:outputText value="${item.rua}"/>
 				</p:column>
-				<p:column headerText="Número" styleClass="centralizarTexto">
+				<p:column headerText="Número" style="text-align: center;">
 					<h:outputText value="${item.numero}" />
 				</p:column>
-				<p:column headerText="Observação" styleClass="centralizarTexto">
+				<p:column headerText="Observação" style="text-align: center;">
 					<h:outputText value="${item.observacao}" />
 				</p:column>
+				<p:column headerText="Ações" style="text-align: center;">
+					<p:commandLink action="#{casaMB.navVisualizar()}" value="Visualizar" update="mainContent" styleClass="fa fa-lg fa-green fa-search-plus"> 
+						<f:setPropertyActionListener value="#{item}" target="#{casaMB.casaSelecionada}"/>
+					</p:commandLink>
+					<p:commandLink action="#{casaMB.navEditar()}" value="Editar" update="mainContent" styleClass="fa fa-lg fa-green fa-search-plus"> 
+						<f:setPropertyActionListener value="#{item}" target="#{casaMB.casaSelecionada}"/>
+					</p:commandLink>
+				</p:column>
+				
 			</p:dataTable>
 			<p:outputPanel >
 				<hr />
@@ -67,19 +100,57 @@
 		</p:outputPanel>
 		
 		<p:outputPanel rendered="${not casaMB.pesquisando}" id="idDados" styleClass="ui-fluid"> 
-			<h:panelGrid columns="4" cellpadding="5">
-				<p:outputLabel value="Código" />
-				<p:inputText value="${casaMB.casa.numSequencial}" disabled="true" />
-				<p:outputLabel value="Rua" />
-				<p:inputText value="#{casaMB.casa.rua}" disabled="${casaMB.visualizando}" title="${casaMB.casa.rua}" />
+			<h:panelGrid columns="3" cellpadding="5">
+				<p:row>
+					<p:outputLabel value="Código" />
+					<p:inputText value="${casaMB.casa.numSequencial}" disabled="true" />
+				</p:row>
+				<p:row>
+					<p:column>
+						<p:outputLabel value="Situação" />
+						<p:inputText value="${casaMB.casa.status.descricao}" disabled="true" />
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:outputLabel value="Data Cadastro" />
+					<p:inputText value="${casaMB.casa.dtHrCadastro}" disabled="true">
+						<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+					</p:inputText>
+				</p:row>
+				<p:row>
+					<p:outputLabel value="Cidade" />
+					<p:inputText value="#{casaMB.casa.cidade}" disabled="${casaMB.visualizando}" title="${casaMB.casa.cidade}"/>
+				</p:row>
+				<p:row>
+					<p:outputLabel value="Bairro" />
+					<p:inputText value="#{casaMB.casa.bairro}" disabled="${casaMB.visualizando}" title="${casaMB.casa.bairro}" />
+				</p:row>
+				<p:row>
+					<p:outputLabel value="Rua" />
+					<p:inputText value="#{casaMB.casa.rua}" disabled="${casaMB.visualizando}" title="${casaMB.casa.rua}" />
+				</p:row>
+				<p:row>
+					<p:outputLabel value="Número" />
+					<p:inputText value="#{casaMB.casa.numero}" disabled="${casaMB.visualizando}" />
+				</p:row>
+				
+			</h:panelGrid>
+			<h:panelGrid columns="6" cellpadding="5">
+				<p:row>
+				<p:outputLabel value="Observação" />
+				<p:inputTextarea id="idObservacao" rows="3" cols="100" maxlength="255" autoResize="false"
+					value="#{casaMB.casa.observacao}" counter="idObservacaoCount" counterTemplate="{0} letras restantes."
+					disabled="${casaMB.visualizando}"/> 
+					<br/><h:outputText id="idObservacaoCount"/>
+				</p:row>
 			</h:panelGrid>
 			<p:outputPanel >
 				<hr />
-				<p:commandButton id="idBtVoltar" value="Voltar para Pesquisa" style="margin-top: 5px; border-top: 1px solid #d3d3d3; clear: both; width: 220px;"
-					 process="@this idDados" actionListener="#{casaMB.navPesquisar()}" update="mainContent"> 
+				<p:commandButton id="idBtVoltar" value="Voltar para Pesquisa" style="margin-top: 5px; border-top: 1px solid #d3d3d3; clear: both; width: 210px;"
+					 process="@this idDados" actionListener="#{casaMB.navVoltarParaPesquisa()}" update="mainContent"> 
 				</p:commandButton>
-				<p:commandButton id="idBtSalvar" value="Salvar" style="margin-top: 5px; border-top: 1px solid #d3d3d3; clear: both; width: 115px;"
-					 process="@this idDados" actionListener="#{casaMB.acaoSalvar()}" > 
+				<p:commandButton id="idBtSalvar" value="${casaMB.labelBtSalvar}" style="margin-top: 5px; border-top: 1px solid #d3d3d3; clear: both; width: 190px;"
+					 process="@this idDados" actionListener="#{casaMB.acaoSalvar()}" update="mainContent" rendered="#{casaMB.cadastrando or casaMB.editando}"> 
 				</p:commandButton>
 			</p:outputPanel>
 		</p:outputPanel>
