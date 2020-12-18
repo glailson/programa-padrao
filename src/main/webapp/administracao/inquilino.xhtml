@@ -19,5 +19,128 @@
 				text-align: center;
 			}
 		</style>
+		<p:outputPanel id="idPesquisa" layout="block" rendered="#{inquilinoMB.pesquisando}">
+			<div class="ui-fluid" >
+				<h:panelGrid columns="3" cellpadding="5">
+					<p:row>
+						<p:column>
+							<p:outputLabel value="Código" />
+							<p:inputNumber id="idFiltroCodigo" value="#{inquilinoMB.filtroCodigo}"/>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<p:outputLabel value="Nome" />
+							<p:inputText id="idFiltroNome" value="#{inquilinoMB.filtroNome}" maxlength="50"/>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<p:outputLabel value="CPF" />
+							<p:inputMask id="idFiltroCpf" mask="999.999.999-99" value="#{inquilinoMB.filtroCpf}"/>  
+						</p:column>
+					</p:row>
+				</h:panelGrid>
+				<hr />
+				<p:outputPanel styleClass="painelBotoes">
+					<p:commandButton id="idBtPesquisa" value="Pesquisar" style="width: 115px; margin-top: 5px;border-top: 1px solid #d3d3d3;clear: both;"
+						 process="@this idFiltroCodigo, idFiltroNome, idFiltroCpf" action="#{inquilinoMB.acaoPesquisar()}" update="idCasaList"> 
+					</p:commandButton>
+					<p:commandButton id="idBtLimpar" value="Limpar" style="width: 115px; margin-top: 5px;border-top: 1px solid #d3d3d3;clear: both;"
+						 process="@this " action="#{inquilinoMB.acaoLimparFiltro()}" update="idPesquisa"> 
+					</p:commandButton>
+				</p:outputPanel>
+				<br />
+			</div>
+			<p:dataTable id="idCasaList" styleClass="resultados" var="item" value="#{inquilinoMB.inquilinoRSList}" rows="10" emptyMessage="Nenhum registro encontrado" paginator="true"
+				paginatorPosition="bottom" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowIndexVar="linha"
+				currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords}">
+				<p:column colspan="1" headerText="Código" styleClass="centralizarTexto">
+					<h:outputText value="${item.numSequencial}" />
+				</p:column>
+				<p:column colspan="1" headerText="Nome" styleClass="centralizarTexto">
+					<h:outputText value="${item.nome}"/>
+				</p:column>
+				<p:column colspan="1" headerText="CPF" styleClass="centralizarTexto">
+					<h:outputText value="${item.cpf}"/>
+				</p:column>
+				<p:column colspan="2" headerText="Telefone" styleClass="centralizarTexto">
+					<h:outputText value="${item.telefone}"/>
+				</p:column>
+<!-- 				<p:column headerText="Ações" styleClass="centralizarTexto"> -->
+<!-- 					<p:commandLink action="#{casaMB.navVisualizar()}" value="Visualizar  " update="mainContent" styleClass="fa fa-lg fa-green fa-search-plus">  -->
+<!-- 						<f:setPropertyActionListener value="#{item}" target="#{casaMB.casaSelecionadaRs}"/> -->
+<!-- 					</p:commandLink> -->
+<!-- 					<p:commandLink action="#{casaMB.navEditar()}" value="Editar" update="mainContent" styleClass="fa fa-lg fa-green fa-search-plus">  -->
+<!-- 						<f:setPropertyActionListener value="#{item}" target="#{casaMB.casaSelecionadaRs}"/> -->
+<!-- 					</p:commandLink> -->
+<!-- 				</p:column> -->
+			</p:dataTable>
+			<p:outputPanel >
+				<hr />
+				<p:commandButton id="idBtNovo" value="Novo" style="margin-top: 5px; border-top: 1px solid #d3d3d3; clear: both; width: 115px;"
+					 process="@this" action="#{inquilinoMB.navCadastrar()}" update="mainContent"> 
+				</p:commandButton>
+			</p:outputPanel>
+		</p:outputPanel>
+		
+		<p:outputPanel rendered="${not inquilinoMB.pesquisando}" id="idDados" styleClass="ui-fluid"> 
+			<h:panelGrid columns="3" cellpadding="5">
+				<p:row>
+					<p:outputLabel value="Código" />
+					<p:inputText value="${casaMB.casa.numSequencial}" disabled="true" />
+				</p:row>
+				<p:row>
+					<p:column>
+						<p:outputLabel value="Situação" />
+						<p:inputText value="${casaMB.casa.status.descricao}" disabled="true" />
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:outputLabel value="Data Cadastro" />
+					<p:inputText value="${casaMB.casa.dtHrCadastro}" disabled="true">
+						<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+					</p:inputText>
+				</p:row>
+				<p:row>
+					<p:outputLabel value="Cidade" />
+					<p:inputText value="#{casaMB.casa.cidade}" disabled="${casaMB.visualizando}" title="${casaMB.casa.cidade}"
+						required="#{casaMB.cadastrando or casaMB.editando}" requiredMessage="Campo 'Cidade' obrigatório."/>
+				</p:row>
+				<p:row>
+					<p:outputLabel value="Bairro" />
+					<p:inputText value="#{casaMB.casa.bairro}" disabled="${casaMB.visualizando}" title="${casaMB.casa.bairro}"
+					 	required="#{casaMB.cadastrando or casaMB.editando}" requiredMessage="Campo 'Bairro' obrigatório."/>
+				</p:row>
+				<p:row>
+					<p:outputLabel value="Rua" />
+					<p:inputText value="#{casaMB.casa.rua}" disabled="${casaMB.visualizando}" title="${casaMB.casa.rua}" 
+						required="#{casaMB.cadastrando or casaMB.editando}" requiredMessage="Campo 'Rua' obrigatório."/>
+				</p:row>
+				<p:row>
+					<p:outputLabel value="Número" />
+					<p:inputText value="#{casaMB.casa.numero}" disabled="${casaMB.visualizando}" />
+				</p:row>
+				
+			</h:panelGrid>
+			<h:panelGrid columns="6" cellpadding="5">
+				<p:row>
+				<p:outputLabel value="Observação" />
+				<p:inputTextarea id="idObservacao" rows="3" cols="100" maxlength="255" autoResize="false"
+					value="#{casaMB.casa.observacao}" counter="idObservacaoCount" counterTemplate="{0} letras restantes."
+					disabled="${casaMB.visualizando}"/> 
+					<br/><h:outputText id="idObservacaoCount"/>
+				</p:row>
+			</h:panelGrid>
+			<p:outputPanel >
+				<hr />
+				<p:commandButton id="idBtVoltar" value="Voltar para Pesquisa" style="margin-top: 5px; border-top: 1px solid #d3d3d3; clear: both; width: 210px;"
+					 process="@this" actionListener="#{inquilinoMB.navVoltarParaPesquisa()}" update="mainContent"> 
+				</p:commandButton>
+				<p:commandButton id="idBtSalvar" value="${inquilinoMB.labelBtSalvar}" style="margin-top: 5px; border-top: 1px solid #d3d3d3; clear: both; width: 190px;"
+					 process="@this idDados" actionListener="#{inquilinoMB.acaoSalvar()}" update="mainContent" rendered="#{inquilinoMB.cadastrando or inquilinoMB.editando}"> 
+				</p:commandButton>
+			</p:outputPanel>
+		</p:outputPanel>
 	</ui:define>
 </ui:composition>
