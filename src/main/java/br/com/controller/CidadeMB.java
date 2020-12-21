@@ -11,9 +11,9 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.model.SelectItem;
 
-import br.com.teste.prova.controller.CidadeBean;
-import br.com.teste.prova.model.Cidade;
-import br.com.teste.prova.model.Estado;
+import br.com.ejb.CidadeBean;
+import br.com.model.Cidade;
+import br.com.model.Estado;
 
 @ManagedBean
 @ViewScoped

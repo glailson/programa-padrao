@@ -1,4 +1,4 @@
-package br.com.teste.prova.model;
+package br.com.model;
 
 import java.io.Serializable;
 /**

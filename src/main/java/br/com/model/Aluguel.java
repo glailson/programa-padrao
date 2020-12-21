@@ -1,7 +1,6 @@
 package br.com.model;
 
 import java.util.Date;
-
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,42 +9,35 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.Size;
 
 @Entity
-@Table(name="tbcasa")
-public class Casa implements GenericEntity<Long> {
+@Table(name="tbaluguel")
+public class Aluguel implements GenericEntity<Long> {
 	private static final long serialVersionUID = 1L;
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "canumsequencial")
+    @Column(name = "alnumsequencial")
 	private Long numSequencial;
-	@Size(max=100)
-    @Column(name="carua")
-    private String rua;
-	@Size(max=100)
-    @Column(name="cabairro")
-    private String bairro;
-	@Size(max=100)
-    @Column(name="cacidade")
-    private String cidade;
-	@Size(max=255)
-    @Column(name="caobservacao")
-    private String observacao;
-	@Column(name="canumero")
-    private Integer numero;
-	@Column(name = "cadthrcadastro")
-    @Temporal(TemporalType.TIMESTAMP)
-	private Date dtHrCadastro;
 	@Enumerated(EnumType.STRING)
-	@Column(name = "carsituacao")
-	private StatusCasa status;
+	@Column(name = "restatusparaclientes")
+	private StatusAluguel status;
+	@ManyToOne
+	@JoinColumn(name = "alcasa", referencedColumnName = "canumsequencial")
+	private Casa casa;
+	@JoinColumn(name = "alinquilino", referencedColumnName = "innumsequencial")
+    @ManyToOne
+    private Inquilino inquilino;
+	@Column(name = "aldthraluguel")
+    @Temporal(TemporalType.TIMESTAMP)
+	private Date dtHrAluguel;
 	
-	public Casa() {
+	public Aluguel() {
 		// TODO Auto-generated constructor stub
 	}
 
@@ -56,63 +48,39 @@ public class Casa implements GenericEntity<Long> {
 	public void setNumSequencial(Long numSequencial) {
 		this.numSequencial = numSequencial;
 	}
-
-	public String getRua() {
-		return rua;
-	}
-
-	public void setRua(String rua) {
-		this.rua = rua;
-	}
-
-	public String getBairro() {
-		return bairro;
-	}
-
-	public void setBairro(String bairro) {
-		this.bairro = bairro;
-	}
-
-	public String getCidade() {
-		return cidade;
-	}
-
-	public void setCidade(String cidade) {
-		this.cidade = cidade;
-	}
-
-	public String getObservacao() {
-		return observacao;
-	}
-
-	public void setObservacao(String observacao) {
-		this.observacao = observacao;
-	}
-
-	public Integer getNumero() {
-		return numero;
-	}
-
-	public void setNumero(Integer numero) {
-		this.numero = numero;
-	}
-
-	public Date getDtHrCadastro() {
-		return dtHrCadastro;
-	}
-
-	public StatusCasa getStatus() {
+	
+	public StatusAluguel getStatus() {
 		return status;
 	}
 
-	public void setStatus(StatusCasa status) {
+	public void setStatus(StatusAluguel status) {
 		this.status = status;
 	}
 
-	public void setDtHrCadastro(Date dtHrCadastro) {
-		this.dtHrCadastro = dtHrCadastro;
+	public Casa getCasa() {
+		return casa;
 	}
-	
+
+	public void setCasa(Casa casa) {
+		this.casa = casa;
+	}
+
+	public Inquilino getInquilino() {
+		return inquilino;
+	}
+
+	public void setInquilino(Inquilino inquilino) {
+		this.inquilino = inquilino;
+	}
+
+	public Date getDtHrAluguel() {
+		return dtHrAluguel;
+	}
+
+	public void setDtHrAluguel(Date dtHrAluguel) {
+		this.dtHrAluguel = dtHrAluguel;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -129,7 +97,7 @@ public class Casa implements GenericEntity<Long> {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Casa other = (Casa) obj;
+		Aluguel other = (Aluguel) obj;
 		if (numSequencial == null) {
 			if (other.numSequencial != null)
 				return false;
@@ -138,17 +106,17 @@ public class Casa implements GenericEntity<Long> {
 		return true;
 	}
 	
-	public static enum StatusCasa {
-		ATIVA(0L,"Ativa"),
-		INATIVA(1L,"Inativa");
+	public static enum StatusAluguel {
+		ATIVO(0L,"Ativo"),
+		INATIVO(1L,"Inativo");
 		
 		private Long numSequencial;
 		private String descricao;
 		
-		private StatusCasa() {
+		private StatusAluguel() {
 		}
 		
-		private StatusCasa(Long numSequencial, String descricao) {
+		private StatusAluguel(Long numSequencial, String descricao) {
 			this.numSequencial = numSequencial;
 			this.descricao = descricao;
 		}

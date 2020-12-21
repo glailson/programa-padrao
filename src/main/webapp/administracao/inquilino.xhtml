@@ -62,10 +62,14 @@
 					<h:outputText value="${item.nome}"/>
 				</p:column>
 				<p:column colspan="1" headerText="CPF" styleClass="centralizarTexto" style="width: 150px;">
-					<h:outputText value="${item.cpf}"/>
+					<h:outputText value="${item.cpf}">
+						<f:converter converterId="CpfCnpjConverter" />
+					</h:outputText>
 				</p:column>
 				<p:column colspan="2" headerText="Telefone" styleClass="centralizarTexto" style="width: 150px;">
-					<h:outputText value="${item.telefone}"/>
+					<h:outputText value="${item.telefone}"> 
+						<f:converter converterId="TelefoneConverter" />
+					</h:outputText>
 				</p:column>
 				<p:column headerText="Ações" styleClass="centralizarTexto" style="width: 100px;">
 					<p:commandLink action="#{inquilinoMB.navVisualizar()}" value="Visualizar  " update="mainContent" styleClass="fa fa-lg fa-green fa-search-plus"> 

@@ -1,3 +1,4 @@
+package br.com.converter;
 import java.io.Serializable;
 import java.util.Map;
 

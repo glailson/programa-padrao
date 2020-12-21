@@ -1,5 +1,6 @@
 package br.com.model;
 
+import java.util.InputMismatchException;
 import java.util.List;
 
 public class Util {
@@ -10,7 +11,7 @@ public class Util {
 	
 	static public String removeMascaraGeral(String comMascara) {
 		if(comMascara != null){
-			return comMascara.replace(".", "").replace("-", "").replace("/", "").replace(" ", "").replace("_", "");
+			return comMascara.replace(".", "").replace("-", "").replace("/", "").replace(" ", "").replace("_", "").replace("(", "").replace(")", "");
 		}
 		return comMascara;
 	}
@@ -80,6 +81,115 @@ public class Util {
              return false;
 		}
 		return verificaDigito(cpf.substring(0, 9)).equals(cpf.substring(9, 11));
+	}
+	
+	static public String formataCpfCnpj(String cpfCnpj) {
+		cpfCnpj = cpfCnpj.trim();
+		StringBuffer temp = new StringBuffer();
+		if (cpfCnpj.length() == 11) {
+			if(validaCPF(cpfCnpj)){
+				temp.append(cpfCnpj.substring(0, 3));
+				temp.append(".");
+				temp.append(cpfCnpj.substring(3, 6));
+				temp.append(".");
+				temp.append(cpfCnpj.substring(6, 9));
+				temp.append("-");
+				temp.append(cpfCnpj.substring(9, 11));
+			} else {
+				temp.append(cpfCnpj);
+			}
+		} else if (cpfCnpj.length() == 14) {
+			if (validaCNPJ(cpfCnpj)){
+				temp.append(cpfCnpj.substring(0, 2));
+				temp.append(".");
+				temp.append(cpfCnpj.substring(2, 5));
+				temp.append(".");
+				temp.append(cpfCnpj.substring(5, 8));
+				temp.append("/");
+				temp.append(cpfCnpj.substring(8, 12));
+				temp.append("-");
+				temp.append(cpfCnpj.substring(12, 14));
+			} else {
+				temp.append(cpfCnpj);
+			}
+		} else {
+			temp.append(cpfCnpj);
+		}
+		String retorno = temp.toString();
+		return retorno;
+	}
+	
+	  //validar CNPJ
+    public static boolean validaCNPJ(String cnpj) { 
+    	cnpj = removeMascaraGeral(cnpj);
+    	if (cnpj.equals("00000000000000") ||
+    		cnpj.equals("11111111111111") || 
+    		cnpj.equals("22222222222222") || 
+    		cnpj.equals("33333333333333") || 
+    		cnpj.equals("44444444444444") || 
+    		cnpj.equals("55555555555555") || 
+    		cnpj.equals("66666666666666") || 
+    		cnpj.equals("77777777777777") || 
+    		cnpj.equals("88888888888888") || 
+    		cnpj.equals("99999999999999") || 
+    		(cnpj.length() != 14)) 
+    		return(false);
+    	     	
+    	char dig13, dig14; 
+    	int sm, i, r, num, peso;    	
+    	try {
+    		sm = 0; 
+    		peso = 2; 
+			for (i=11; i>=0; i--) { 
+				num = (int)(cnpj.charAt(i) - 48); 
+				sm = sm + (num * peso);
+				peso = peso + 1; 
+				if (peso == 10) 
+					peso = 2; 
+			}    			
+			r = sm % 11; 
+			if ((r == 0) || (r == 1)) 
+				dig13 = '0';
+  			else dig13 = (char)((11-r) + 48); 
+			sm = 0; peso = 2;
+			for (i=12; i>=0; i--) { 
+				num = (int)(cnpj.charAt(i)- 48); 
+				sm = sm + (num * peso); 
+				peso = peso + 1; 
+				if (peso == 10)
+					peso = 2; 
+				} 
+			r = sm % 11; 
+			if ((r == 0) || (r == 1))
+				dig14 = '0'; 
+			else dig14 = (char)((11-r) + 48); 
+
+			if ((dig13 == cnpj.charAt(12)) && (dig14 == cnpj.charAt(13)))
+				return(true); 
+			else return(false);
+		}
+    	
+    	catch (InputMismatchException erro) {
+    		return(false);
+    	} 	
+    }
+    
+    static public String formataTelefone(String telefone){
+		StringBuffer temp = new StringBuffer();
+		if (telefone.length() >= 10) {
+			temp.append("(");
+			temp.append(telefone.substring(0, 2));
+			temp.append(") ");
+		}
+		if (telefone.length() > 8) {
+			temp.append(telefone.substring(2, 6));
+			temp.append("-");
+			temp.append(telefone.substring(6, 10));
+		}
+		if (telefone.length() > 10) {
+			temp.append(telefone.substring(10, 11));
+		}
+		return temp.toString();
 	}
 
 }

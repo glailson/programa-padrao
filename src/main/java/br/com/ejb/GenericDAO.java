@@ -8,7 +8,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
 
-import br.com.teste.prova.model.GenericEntity;
+import br.com.model.GenericEntity;
 
 public class GenericDAO<T extends GenericEntity<Long>> {
     

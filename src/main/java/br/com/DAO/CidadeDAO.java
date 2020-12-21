@@ -11,10 +11,10 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import br.com.ejb.GenericDAO;
-import br.com.teste.prova.model.Cidade;
-import br.com.teste.prova.model.Cidade_;
-import br.com.teste.prova.model.Estado;
-import br.com.teste.prova.model.Estado_;
+import br.com.model.Cidade;
+import br.com.model.Cidade_;
+import br.com.model.Estado;
+import br.com.model.Estado_;
 
 public class CidadeDAO extends GenericDAO<Cidade> {
 	

@@ -1,12 +1,11 @@
-package br.com.teste.prova.controller;
+package br.com.ejb;
 
 import java.util.List;
 
 import javax.ejb.Stateless;
 
 import br.com.DAO.CidadeDAO;
-import br.com.ejb.GenericBean;
-import br.com.teste.prova.model.Cidade;
+import br.com.model.Cidade;
 
 @Stateless
 public class CidadeBean extends GenericBean<Cidade> {
