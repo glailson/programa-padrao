@@ -1,7 +1,6 @@
 package br.com.controller;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -79,7 +78,6 @@ public class InquilinoMB extends MainMB implements Serializable {
 	}
 	
 	public void acaoSalvar () {
-		inquilino.setDtHrCadastro(new Date());
 		inquilino = inquilinoBean.salvar(inquilino);
 		if (isCadastrando()) {
 			addInfoMessage("Cadastro realizado com sucesso.");
@@ -94,8 +92,12 @@ public class InquilinoMB extends MainMB implements Serializable {
 	}
 	
 	public void navVoltarParaPesquisa() {
-		inquilino = null;
-		inquilinoSelecionadoRS = null;
+		if (inquilino != null ) {
+			inquilino = null;
+		}
+		if (inquilinoSelecionadoRS != null) {
+			inquilinoSelecionadoRS = null;
+		}
 		render(Acao.pesquisar);
 	}
 	
@@ -105,6 +107,10 @@ public class InquilinoMB extends MainMB implements Serializable {
 	
 	public void navPesquisar() {
 		render(Acao.pesquisar);
+	}
+	
+	public void navEditar() {
+		render(Acao.editar);
 	}
 	
 	public boolean isPesquisando() {

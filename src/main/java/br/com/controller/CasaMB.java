@@ -65,8 +65,6 @@ public class CasaMB extends MainMB implements Serializable {
 	}
 	
 	public void acaoSalvar () {
-		casa.setDtHrCadastro(new Date());
-		casa.setStatus(StatusCasa.ATIVA);
 		casa = casaBean.salvar(casa);
 		if (isCadastrando()) {
 			addInfoMessage("Cadastro realizado com sucesso.");
@@ -96,8 +94,12 @@ public class CasaMB extends MainMB implements Serializable {
 	}
 	
 	public void navVoltarParaPesquisa() {
-		casa = null;
-		casaSelecionadaRs = null;
+		if (casa != null) {
+			casa = null;
+		}
+		if (casaSelecionadaRs != null) {
+			casaSelecionadaRs = null;
+		}
 		render(Acao.pesquisar);
 	}
 	

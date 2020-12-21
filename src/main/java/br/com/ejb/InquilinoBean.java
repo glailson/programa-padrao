@@ -1,9 +1,11 @@
 package br.com.ejb;
 
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import br.com.DAO.InquilinoDAO;
 import br.com.model.Inquilino;
+import br.com.model.Util;
 import br.com.model.resultset.InquilinoRS;
 
 @Stateless
@@ -26,6 +28,14 @@ public class InquilinoBean extends GenericBean<Inquilino> {
 	}
 	
 	public Inquilino salvar(Inquilino inquilino) {
+		inquilino.setDtHrCadastro(new Date());
+		inquilino.setNome(inquilino.getNome().toUpperCase());
+		inquilino.setNomeFiador(inquilino.getNomeFiador().toUpperCase());
+		inquilino.setNomeGuerra(inquilino.getNomeGuerra().toUpperCase());
+		inquilino.setProfissao(inquilino.getProfissao().toUpperCase());
+		inquilino.setCpf(Util.removeMascaraGeral(inquilino.getCpf()));
+		inquilino.setTelefone(Util.removeMascaraGeral(inquilino.getTelefone()));
+		inquilino.setTelefoneFiador(Util.removeMascaraGeral(inquilino.getTelefoneFiador()));
 		return getInquilinoDAO().update(inquilino);
 	}
 

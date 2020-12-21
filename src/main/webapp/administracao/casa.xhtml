@@ -127,18 +127,18 @@
 					</p:inputText>
 				</p:row>
 				<p:row>
-					<p:outputLabel value="Cidade" />
-					<p:inputText value="#{casaMB.casa.cidade}" disabled="${casaMB.visualizando}" title="${casaMB.casa.cidade}"
+					<p:outputLabel value="Cidade" for="idCidade"/>
+					<p:inputText id="idCidade" value="#{casaMB.casa.cidade}" disabled="${casaMB.visualizando}" title="${casaMB.casa.cidade}"
 						required="#{casaMB.cadastrando or casaMB.editando}" requiredMessage="Campo 'Cidade' obrigatório."/>
 				</p:row>
 				<p:row>
-					<p:outputLabel value="Bairro" />
-					<p:inputText value="#{casaMB.casa.bairro}" disabled="${casaMB.visualizando}" title="${casaMB.casa.bairro}"
+					<p:outputLabel value="Bairro" for="idBairro"/>
+					<p:inputText id="idBairro" value="#{casaMB.casa.bairro}" disabled="${casaMB.visualizando}" title="${casaMB.casa.bairro}"
 					 	required="#{casaMB.cadastrando or casaMB.editando}" requiredMessage="Campo 'Bairro' obrigatório."/>
 				</p:row>
 				<p:row>
-					<p:outputLabel value="Rua" />
-					<p:inputText value="#{casaMB.casa.rua}" disabled="${casaMB.visualizando}" title="${casaMB.casa.rua}" 
+					<p:outputLabel value="Rua" for="idRua"/>
+					<p:inputText id="idRua" value="#{casaMB.casa.rua}" disabled="${casaMB.visualizando}" title="${casaMB.casa.rua}" 
 						required="#{casaMB.cadastrando or casaMB.editando}" requiredMessage="Campo 'Rua' obrigatório."/>
 				</p:row>
 				<p:row>

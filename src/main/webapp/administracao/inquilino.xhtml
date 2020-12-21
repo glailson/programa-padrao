@@ -55,26 +55,26 @@
 			<p:dataTable id="idCasaList" styleClass="resultados" var="item" value="#{inquilinoMB.inquilinoRSList}" rows="10" emptyMessage="Nenhum registro encontrado" paginator="true"
 				paginatorPosition="bottom" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowIndexVar="linha"
 				currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords}">
-				<p:column colspan="1" headerText="Código" styleClass="centralizarTexto">
+				<p:column colspan="1" headerText="Código" styleClass="centralizarTexto" style="width: 100px;">
 					<h:outputText value="${item.numSequencial}" />
 				</p:column>
-				<p:column colspan="1" headerText="Nome" styleClass="centralizarTexto">
+				<p:column colspan="1" headerText="Nome" styleClass="centralizarTexto" >
 					<h:outputText value="${item.nome}"/>
 				</p:column>
-				<p:column colspan="1" headerText="CPF" styleClass="centralizarTexto">
+				<p:column colspan="1" headerText="CPF" styleClass="centralizarTexto" style="width: 150px;">
 					<h:outputText value="${item.cpf}"/>
 				</p:column>
-				<p:column colspan="2" headerText="Telefone" styleClass="centralizarTexto">
+				<p:column colspan="2" headerText="Telefone" styleClass="centralizarTexto" style="width: 150px;">
 					<h:outputText value="${item.telefone}"/>
 				</p:column>
-<!-- 				<p:column headerText="Ações" styleClass="centralizarTexto"> -->
-<!-- 					<p:commandLink action="#{casaMB.navVisualizar()}" value="Visualizar  " update="mainContent" styleClass="fa fa-lg fa-green fa-search-plus">  -->
-<!-- 						<f:setPropertyActionListener value="#{item}" target="#{casaMB.casaSelecionadaRs}"/> -->
-<!-- 					</p:commandLink> -->
-<!-- 					<p:commandLink action="#{casaMB.navEditar()}" value="Editar" update="mainContent" styleClass="fa fa-lg fa-green fa-search-plus">  -->
-<!-- 						<f:setPropertyActionListener value="#{item}" target="#{casaMB.casaSelecionadaRs}"/> -->
-<!-- 					</p:commandLink> -->
-<!-- 				</p:column> -->
+				<p:column headerText="Ações" styleClass="centralizarTexto" style="width: 100px;">
+					<p:commandLink action="#{inquilinoMB.navVisualizar()}" value="Visualizar  " update="mainContent" styleClass="fa fa-lg fa-green fa-search-plus"> 
+						<f:setPropertyActionListener value="#{item}" target="#{inquilinoMB.inquilinoSelecionadoRS}"/>
+					</p:commandLink>
+					<p:commandLink action="#{inquilinoMB.navEditar()}" value="Editar" update="mainContent" styleClass="fa fa-lg fa-green fa-search-plus"> 
+						<f:setPropertyActionListener value="#{item}" target="#{inquilinoMB.inquilinoSelecionadoRS}"/>
+					</p:commandLink>
+				</p:column>
 			</p:dataTable>
 			<p:outputPanel >
 				<hr />
@@ -88,38 +88,58 @@
 			<h:panelGrid columns="3" cellpadding="5">
 				<p:row>
 					<p:outputLabel value="Código" />
-					<p:inputText value="${casaMB.casa.numSequencial}" disabled="true" />
+					<p:inputText value="${inquilinoMB.inquilino.numSequencial}" disabled="true" />
 				</p:row>
 				<p:row>
 					<p:column>
 						<p:outputLabel value="Situação" />
-						<p:inputText value="${casaMB.casa.status.descricao}" disabled="true" />
+						<p:inputText value="ATIVO" disabled="true" />
 					</p:column>
 				</p:row>
 				<p:row>
 					<p:outputLabel value="Data Cadastro" />
-					<p:inputText value="${casaMB.casa.dtHrCadastro}" disabled="true">
+					<p:inputText value="${inquilinoMB.inquilino.dtHrCadastro}" disabled="true">
 						<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
 					</p:inputText>
 				</p:row>
 				<p:row>
-					<p:outputLabel value="Cidade" />
-					<p:inputText value="#{casaMB.casa.cidade}" disabled="${casaMB.visualizando}" title="${casaMB.casa.cidade}"
-						required="#{casaMB.cadastrando or casaMB.editando}" requiredMessage="Campo 'Cidade' obrigatório."/>
+					<p:outputLabel value="Nome" for="idNome" />
+					<p:inputText id="idNome" value="#{inquilinoMB.inquilino.nome}" disabled="${inquilinoMB.visualizando}" title="${inquilinoMB.inquilino.nome}"
+						required="${inquilinoMB.cadastrando or inquilinoMB.editando}" requiredMessage="Campo 'Nome' obrigatório."/>
 				</p:row>
 				<p:row>
-					<p:outputLabel value="Bairro" />
-					<p:inputText value="#{casaMB.casa.bairro}" disabled="${casaMB.visualizando}" title="${casaMB.casa.bairro}"
-					 	required="#{casaMB.cadastrando or casaMB.editando}" requiredMessage="Campo 'Bairro' obrigatório."/>
+					<p:outputLabel value="CPF" for="idCpf"/>
+					<p:inputMask id="idCpf" mask="999.999.999-99" 
+						value="#{inquilinoMB.inquilino.cpf}" disabled="${inquilinoMB.visualizando}" title="${inquilinoMB.inquilino.cpf}"
+					 	required="${inquilinoMB.cadastrando or inquilinoMB.editando}" requiredMessage="Campo 'CPF' obrigatório."/>  
 				</p:row>
+				
 				<p:row>
-					<p:outputLabel value="Rua" />
-					<p:inputText value="#{casaMB.casa.rua}" disabled="${casaMB.visualizando}" title="${casaMB.casa.rua}" 
-						required="#{casaMB.cadastrando or casaMB.editando}" requiredMessage="Campo 'Rua' obrigatório."/>
+					<p:outputLabel value="Telefone" for="idTelefone"/>
+					<p:inputMask id="idTelefone" mask="(99)9999-9999?9" 
+						value="#{inquilinoMB.inquilino.telefone}" disabled="${inquilinoMB.visualizando}" title="${inquilinoMB.inquilino.telefone}"
+					 	required="${inquilinoMB.cadastrando or inquilinoMB.editando}" requiredMessage="Campo 'Telefone' obrigatório."/>  
 				</p:row>
+				
 				<p:row>
-					<p:outputLabel value="Número" />
-					<p:inputText value="#{casaMB.casa.numero}" disabled="${casaMB.visualizando}" />
+					<p:outputLabel value="Nome de Guerra" for="idNomeGuerra"/>
+					<p:inputText id="idNomeGuerra" value="#{inquilinoMB.inquilino.nomeGuerra}" disabled="${inquilinoMB.visualizando}" title="${inquilinoMB.inquilino.nomeGuerra}" />
+				</p:row>
+				
+				<p:row>
+					<p:outputLabel value="Nome Fiador" for="idNomeFiador"/>
+					<p:inputText id="idNomeFiador" value="#{inquilinoMB.inquilino.nomeFiador}" disabled="${inquilinoMB.visualizando}" title="${inquilinoMB.inquilino.nomeFiador}" />
+				</p:row>
+				
+				<p:row>
+					<p:outputLabel value="Telefone Fiador" for="idTelefoneFiador"/>
+					<p:inputMask id="idTelefoneFiador" mask="(99)9999-9999?9" 
+						value="#{inquilinoMB.inquilino.telefoneFiador}" disabled="${inquilinoMB.visualizando}" title="${inquilinoMB.inquilino.telefoneFiador}"/>  
+				</p:row>
+				
+				<p:row>
+					<p:outputLabel value="Profissão" for="idProfissao"/>
+					<p:inputText id="idProfissao" value="#{inquilinoMB.inquilino.profissao}" disabled="${inquilinoMB.visualizando}" title="${inquilinoMB.inquilino.profissao}" />
 				</p:row>
 				
 			</h:panelGrid>
@@ -127,8 +147,8 @@
 				<p:row>
 				<p:outputLabel value="Observação" />
 				<p:inputTextarea id="idObservacao" rows="3" cols="100" maxlength="255" autoResize="false"
-					value="#{casaMB.casa.observacao}" counter="idObservacaoCount" counterTemplate="{0} letras restantes."
-					disabled="${casaMB.visualizando}"/> 
+					value="#{inquilinoMB.inquilino.observacao}" counter="idObservacaoCount" counterTemplate="{0} letras restantes."
+					disabled="${inquilinoMB.visualizando}"/> 
 					<br/><h:outputText id="idObservacaoCount"/>
 				</p:row>
 			</h:panelGrid>
