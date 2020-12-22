@@ -47,6 +47,7 @@ ALTER TABLE aluguefacil.tbinquilino
   alcasa bigint,
   aldthraluguel timestamp without time zone,
   alvencimento integer,
+  alobservacao varchar(255),
   CONSTRAINT tbaluguel_pkey PRIMARY KEY (alnumsequencial),
   CONSTRAINT tbinquilino_alinquilino_fkey FOREIGN KEY (alinquilino)
       REFERENCES aluguefacil.tbinquilino (innumsequencial) MATCH SIMPLE
@@ -61,6 +62,10 @@ WITH (
 );
 ALTER TABLE aluguefacil.tbaluguel
   OWNER TO postgres;
+  
+  
+ALTER TABLE aluguefacil.tbaluguel ADD COLUMN  alvalor numeric(5,2);
+
   
 CREATE TABLE aluguefacil.tbpagamentoaluguel
 (
@@ -78,3 +83,5 @@ WITH (
 );
 ALTER TABLE aluguefacil.tbpagamentoaluguel
   OWNER TO postgres;
+  
+ALTER TABLE aluguefacil.tbpagamentoaluguel ADD COLUMN padthrreferenciapagamento timestamp without time zone;

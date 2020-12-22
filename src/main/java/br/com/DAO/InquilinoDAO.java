@@ -2,20 +2,15 @@ package br.com.DAO;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.persistence.NoResultException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-
 import br.com.ejb.GenericDAO;
-import br.com.model.Casa;
-import br.com.model.Casa_;
 import br.com.model.Inquilino;
 import br.com.model.Inquilino_;
 import br.com.model.Util;
-import br.com.model.resultset.CasaRS;
 import br.com.model.resultset.InquilinoRS;
 
 public class InquilinoDAO extends GenericDAO<Inquilino> {

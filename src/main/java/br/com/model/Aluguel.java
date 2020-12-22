@@ -1,16 +1,20 @@
 package br.com.model;
 
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -36,6 +40,12 @@ public class Aluguel implements GenericEntity<Long> {
 	@Column(name = "aldthraluguel")
     @Temporal(TemporalType.TIMESTAMP)
 	private Date dtHrAluguel;
+	@OneToMany(mappedBy = "aluguel",cascade = CascadeType.ALL, orphanRemoval=true,fetch= FetchType.LAZY)
+	private List<PagamentoAluguel> pagamentosAluguelList;
+	@Column(name = "alvencimento")
+	private Integer vencimento;
+	@Column(name = "alvalor")
+	private Double valor;
 	
 	public Aluguel() {
 		// TODO Auto-generated constructor stub
@@ -79,6 +89,30 @@ public class Aluguel implements GenericEntity<Long> {
 
 	public void setDtHrAluguel(Date dtHrAluguel) {
 		this.dtHrAluguel = dtHrAluguel;
+	}
+
+	public List<PagamentoAluguel> getPagamentosAluguelList() {
+		return pagamentosAluguelList;
+	}
+
+	public void setPagamentosAluguelList(List<PagamentoAluguel> pagamentosAluguelList) {
+		this.pagamentosAluguelList = pagamentosAluguelList;
+	}
+
+	public Integer getVencimento() {
+		return vencimento;
+	}
+
+	public void setVencimento(Integer vencimento) {
+		this.vencimento = vencimento;
+	}
+
+	public Double getValor() {
+		return valor;
+	}
+
+	public void setValor(Double valor) {
+		this.valor = valor;
 	}
 
 	@Override

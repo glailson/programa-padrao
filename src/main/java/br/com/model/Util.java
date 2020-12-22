@@ -1,5 +1,6 @@
 package br.com.model;
 
+import java.util.Date;
 import java.util.InputMismatchException;
 import java.util.List;
 
@@ -190,6 +191,10 @@ public class Util {
 			temp.append(telefone.substring(10, 11));
 		}
 		return temp.toString();
+	}
+    
+    public static boolean betweenExclusive(Date dataInicio, Date dataFim, Date dataValidacao){
+		return dataValidacao.before(dataFim) && dataValidacao.after(dataInicio);
 	}
 
 }

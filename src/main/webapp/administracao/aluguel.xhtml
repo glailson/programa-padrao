@@ -1,0 +1,228 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      template="/template/layout.xhtml">
+    	
+	<ui:define name="header">
+		<h1>Controle de Aluguel</h1>
+		<hr />
+		
+	</ui:define>
+	<ui:define name="content">
+		<h3>
+			<h:outputText value="${aluguelMB.subTitulo}" />
+		</h3>
+		<style>
+			.centralizarTexto {
+				text-align: center;
+			}
+		</style>
+		<script>
+		PrimeFaces.locales['pt'] = {
+		        closeText: 'Fechar',
+		            prevText: 'Anterior',
+		            nextText: 'Próximo',
+		            currentText: 'Começo',
+		            monthNames: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],                         
+		            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+		            dayNames: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
+		            dayNamesShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'],
+		            dayNamesMin: ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'],
+		            weekHeader: 'Semana',
+		            firstDay: 1,
+		            isRTL: false,
+		            showMonthAfterYear: false,
+		            yearSuffix: '',
+		            timeOnlyTitle: 'Só Horas',
+		            timeText: 'Tempo',
+		            hourText: 'Hora',
+		            minuteText: 'Minuto',
+		            secondText: 'Segundo',
+		            ampm: false,
+		            month: 'Mês',
+		            week: 'Semana',
+		            day: 'Dia',
+		            allDayText: 'Todo Dia'
+		        };
+		</script>
+		<p:outputPanel id="idPesquisa" layout="block" rendered="#{aluguelMB.pesquisando}">
+			<div class="ui-fluid" >
+				<h:panelGrid columns="3" cellpadding="5">
+					<p:row>
+						<p:column>
+							<p:outputLabel value="Código" />
+							<p:inputNumber id="idFiltroCodigo" value="#{aluguelMB.filtroCodigo}"/>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<p:outputLabel value="Nome" />
+							<p:inputText id="idFiltroNome" value="#{aluguelMB.filtroNome}" maxlength="50"/>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<p:outputLabel value="CPF" />
+							<p:inputMask id="idFiltroCpf" mask="999.999.999-99" value="#{aluguelMB.filtroCpf}"/>  
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<p:outputLabel value="Status" />
+							<p:selectOneMenu id="idFiltroStatus" value="#{aluguelMB.filtroStatus}" >
+								<f:selectItem itemLabel="Todos" />
+								<f:selectItems value="#{aluguelMB.statusAluguelList}" var="item" itemLabel="#{item.descricao}"/>
+							</p:selectOneMenu>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<p:outputLabel value="Bairro" />
+							<p:inputText id="idFiltroBairro" value="#{aluguelMB.filtroBairro}" maxlength="50"/>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<p:outputLabel value="Rua" />
+							<p:inputText id="idFiltroRua" value="#{aluguelMB.filtroRua}" maxlength="50"/>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<p:outputLabel for="dataInicio" value="Data Início" />
+					        <p:calendar id="dataInicio" value="#{aluguelMB.filtroDataInicial}" 
+					        	pattern="dd/MM/yyyy" locale="pt" showButtonPanel="true" 
+					        	navigator="true"/>
+					    </p:column>
+					 </p:row>
+					
+				</h:panelGrid>
+				<hr />
+				<p:outputPanel styleClass="painelBotoes">
+					<p:commandButton id="idBtPesquisa" value="Pesquisar" style="width: 115px; margin-top: 5px;border-top: 1px solid #d3d3d3;clear: both;"
+						 process="@this idPesquisa" action="#{aluguelMB.acaoPesquisar()}" update="idCasaList"> 
+					</p:commandButton>
+					<p:commandButton id="idBtLimpar" value="Limpar" style="width: 115px; margin-top: 5px;border-top: 1px solid #d3d3d3;clear: both;"
+						 process="@this " action="#{aluguelMB.acaoLimparFiltro()}" update="idPesquisa"> 
+					</p:commandButton>
+				</p:outputPanel>
+				<br />
+			</div>
+			<p:dataTable id="idCasaList" styleClass="resultados" var="item" value="#{inquilinoMB.inquilinoRSList}" rows="10" emptyMessage="Nenhum registro encontrado" paginator="true"
+				paginatorPosition="bottom" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowIndexVar="linha"
+				currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords}">
+				<p:column colspan="1" headerText="Código" styleClass="centralizarTexto" style="width: 100px;">
+					<h:outputText value="${item.numSequencial}" />
+				</p:column>
+				<p:column colspan="1" headerText="Nome" styleClass="centralizarTexto" >
+					<h:outputText value="${item.nome}"/>
+				</p:column>
+				<p:column colspan="1" headerText="CPF" styleClass="centralizarTexto" style="width: 150px;">
+					<h:outputText value="${item.cpf}">
+						<f:converter converterId="CpfCnpjConverter" />
+					</h:outputText>
+				</p:column>
+				<p:column colspan="2" headerText="Telefone" styleClass="centralizarTexto" style="width: 150px;">
+					<h:outputText value="${item.telefone}"> 
+						<f:converter converterId="TelefoneConverter" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Ações" styleClass="centralizarTexto" style="width: 100px;">
+					<p:commandLink action="#{inquilinoMB.navVisualizar()}" value="Visualizar  " update="mainContent" styleClass="fa fa-lg fa-green fa-search-plus"> 
+						<f:setPropertyActionListener value="#{item}" target="#{inquilinoMB.inquilinoSelecionadoRS}"/>
+					</p:commandLink>
+					<p:commandLink action="#{inquilinoMB.navEditar()}" value="Editar" update="mainContent" styleClass="fa fa-lg fa-green fa-search-plus"> 
+						<f:setPropertyActionListener value="#{item}" target="#{inquilinoMB.inquilinoSelecionadoRS}"/>
+					</p:commandLink>
+				</p:column>
+			</p:dataTable>
+			<p:outputPanel >
+				<hr />
+				<p:commandButton id="idBtNovo" value="Novo" style="margin-top: 5px; border-top: 1px solid #d3d3d3; clear: both; width: 115px;"
+					 process="@this" action="#{aluguelMB.navAlugar()}" update="mainContent"> 
+				</p:commandButton>
+			</p:outputPanel>
+		</p:outputPanel>
+		
+		<p:outputPanel rendered="${not aluguelMB.pesquisando}" id="idDados" styleClass="ui-fluid"> 
+			<h:panelGrid columns="3" cellpadding="5">
+				<p:row>
+					<p:outputLabel value="Código" />
+					<p:inputText value="${inquilinoMB.inquilino.numSequencial}" disabled="true" />
+				</p:row>
+				<p:row>
+					<p:column>
+						<p:outputLabel value="Situação" />
+						<p:inputText value="ATIVO" disabled="true" />
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:outputLabel value="Data Cadastro" />
+					<p:inputText value="${inquilinoMB.inquilino.dtHrCadastro}" disabled="true">
+						<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+					</p:inputText>
+				</p:row>
+				<p:row>
+					<p:outputLabel value="Nome" for="idNome" />
+					<p:inputText id="idNome" value="#{inquilinoMB.inquilino.nome}" disabled="${inquilinoMB.visualizando}" title="${inquilinoMB.inquilino.nome}"
+						required="${inquilinoMB.cadastrando or inquilinoMB.editando}" requiredMessage="Campo 'Nome' obrigatório."/>
+				</p:row>
+				<p:row>
+					<p:outputLabel value="CPF" for="idCpf"/>
+					<p:inputMask id="idCpf" mask="999.999.999-99" 
+						value="#{inquilinoMB.inquilino.cpf}" disabled="${inquilinoMB.visualizando}" title="${inquilinoMB.inquilino.cpf}"
+					 	required="${inquilinoMB.cadastrando or inquilinoMB.editando}" requiredMessage="Campo 'CPF' obrigatório."/>  
+				</p:row>
+				
+				<p:row>
+					<p:outputLabel value="Telefone" for="idTelefone"/>
+					<p:inputMask id="idTelefone" mask="(99)9999-9999?9" 
+						value="#{inquilinoMB.inquilino.telefone}" disabled="${inquilinoMB.visualizando}" title="${inquilinoMB.inquilino.telefone}"
+					 	required="${inquilinoMB.cadastrando or inquilinoMB.editando}" requiredMessage="Campo 'Telefone' obrigatório."/>  
+				</p:row>
+				
+				<p:row>
+					<p:outputLabel value="Nome de Guerra" for="idNomeGuerra"/>
+					<p:inputText id="idNomeGuerra" value="#{inquilinoMB.inquilino.nomeGuerra}" disabled="${inquilinoMB.visualizando}" title="${inquilinoMB.inquilino.nomeGuerra}" />
+				</p:row>
+				
+				<p:row>
+					<p:outputLabel value="Nome Fiador" for="idNomeFiador"/>
+					<p:inputText id="idNomeFiador" value="#{inquilinoMB.inquilino.nomeFiador}" disabled="${inquilinoMB.visualizando}" title="${inquilinoMB.inquilino.nomeFiador}" />
+				</p:row>
+				
+				<p:row>
+					<p:outputLabel value="Telefone Fiador" for="idTelefoneFiador"/>
+					<p:inputMask id="idTelefoneFiador" mask="(99)9999-9999?9" 
+						value="#{inquilinoMB.inquilino.telefoneFiador}" disabled="${inquilinoMB.visualizando}" title="${inquilinoMB.inquilino.telefoneFiador}"/>  
+				</p:row>
+				
+				<p:row>
+					<p:outputLabel value="Profissão" for="idProfissao"/>
+					<p:inputText id="idProfissao" value="#{inquilinoMB.inquilino.profissao}" disabled="${inquilinoMB.visualizando}" title="${inquilinoMB.inquilino.profissao}" />
+				</p:row>
+				
+			</h:panelGrid>
+			<h:panelGrid columns="6" cellpadding="5">
+				<p:row>
+				<p:outputLabel value="Observação" />
+				<p:inputTextarea id="idObservacao" rows="3" cols="100" maxlength="255" autoResize="false"
+					value="#{inquilinoMB.inquilino.observacao}" counter="idObservacaoCount" counterTemplate="{0} letras restantes."
+					disabled="${inquilinoMB.visualizando}"/> 
+					<br/><h:outputText id="idObservacaoCount"/>
+				</p:row>
+			</h:panelGrid>
+			<p:outputPanel >
+				<hr />
+				<p:commandButton id="idBtVoltar" value="Voltar para Pesquisa" style="margin-top: 5px; border-top: 1px solid #d3d3d3; clear: both; width: 210px;"
+					 process="@this" actionListener="#{aluguelMB.navVoltarParaPesquisa()}" update="mainContent"> 
+				</p:commandButton>
+				<p:commandButton id="idBtSalvar" value="${inquilinoMB.labelBtSalvar}" style="margin-top: 5px; border-top: 1px solid #d3d3d3; clear: both; width: 190px;"
+					 process="@this idDados" actionListener="#{inquilinoMB.acaoSalvar()}" update="mainContent" rendered="#{inquilinoMB.cadastrando or inquilinoMB.editando}"> 
+				</p:commandButton>
+			</p:outputPanel>
+		</p:outputPanel>
+	</ui:define>
+</ui:composition>

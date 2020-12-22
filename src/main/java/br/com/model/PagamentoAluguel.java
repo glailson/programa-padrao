@@ -29,6 +29,9 @@ public class PagamentoAluguel implements GenericEntity<Long> {
 	@Column(name = "padthrpagamento")
     @Temporal(TemporalType.TIMESTAMP)
 	private Date dtHrPagamento;
+	@Column(name = "padthrreferenciapagamento")
+    @Temporal(TemporalType.TIMESTAMP)
+	private Date dtHrReferenciaPagamento;
 	
 	public PagamentoAluguel() {
 		// TODO Auto-generated constructor stub
@@ -42,6 +45,30 @@ public class PagamentoAluguel implements GenericEntity<Long> {
 		this.numSequencial = numSequencial;
 	}
 	
+	public Aluguel getAluguel() {
+		return aluguel;
+	}
+
+	public void setAluguel(Aluguel aluguel) {
+		this.aluguel = aluguel;
+	}
+
+	public Date getDtHrPagamento() {
+		return dtHrPagamento;
+	}
+
+	public void setDtHrPagamento(Date dtHrPagamento) {
+		this.dtHrPagamento = dtHrPagamento;
+	}
+
+	public Date getDtHrReferenciaPagamento() {
+		return dtHrReferenciaPagamento;
+	}
+
+	public void setDtHrReferenciaPagamento(Date dtHrReferenciaPagamento) {
+		this.dtHrReferenciaPagamento = dtHrReferenciaPagamento;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
