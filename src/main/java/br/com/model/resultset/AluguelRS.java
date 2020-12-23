@@ -6,6 +6,7 @@ public class AluguelRS {
 	
 	private Long numSequencial;
 	private String nome;
+	private String nomeGuerra;
 	private String bairro;
 	private String rua;
 	private Integer numero;
@@ -16,21 +17,19 @@ public class AluguelRS {
 	public AluguelRS() {
 		// TODO Auto-generated constructor stub
 	}
-	
-	
 
-	public AluguelRS(Long numSequencial, String nome, String rua, Integer numero, StatusAluguel status,
+	public AluguelRS(Long numSequencial, String nome, String nomeGuerra, String bairro, String rua, Integer numero, StatusAluguel status,
 			Integer vencimento) {
 		super();
 		this.numSequencial = numSequencial;
 		this.nome = nome;
+		this.nomeGuerra = nomeGuerra;
+		this.bairro = bairro;
 		this.rua = rua;
 		this.numero = numero;
 		this.status = status;
 		this.vencimento = vencimento;
 	}
-
-
 
 	public AluguelRS(Long numSequencial) {
 		super();
@@ -91,6 +90,14 @@ public class AluguelRS {
 
 	public void setVencimento(Integer vencimento) {
 		this.vencimento = vencimento;
+	}
+
+	public String getNomeGuerra() {
+		return nomeGuerra;
+	}
+
+	public void setNomeGuerra(String nomeGuerra) {
+		this.nomeGuerra = nomeGuerra;
 	}
 	
 }

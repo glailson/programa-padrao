@@ -114,7 +114,7 @@
 				paginatorPosition="bottom" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowIndexVar="linha"
 				currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords}">
 				<p:column colspan="1" headerText="Nome" styleClass="centralizarTexto" >
-					<h:outputText value="${item.nome}"/>
+					<h:outputText value="${item.nomeGuerra}"/>
 				</p:column>
 				<p:column colspan="1" headerText="Bairro" styleClass="centralizarTexto" style="width: 150px;">
 					<h:outputText value="${item.bairro}" />
@@ -132,11 +132,11 @@
 					<h:outputText value="${item.vencimento}" /> 
 				</p:column>
 				<p:column headerText="Ações" styleClass="centralizarTexto" style="width: 100px;">
-					<p:commandLink action="#{aluguelMB.navVisualizar()}" value="Visualizar  " update="mainContent" styleClass="fa fa-lg fa-green fa-search-plus">
+					<p:commandLink action="#{aluguelMB.navVisualizar()}" update="mainContent" styleClass="fa fa-lg fa-green fa-search-plus">
 						<h:graphicImage library="aluguefacil" name="/imagens/iconPesquisar.png" alt="Visualizar" title="Visualizar" /> 
 						<f:setPropertyActionListener value="#{item}" target="#{aluguelMB.aluguelSelecionadoRS}"/>
 					</p:commandLink>
-					<p:commandLink style="padding-left: 5px;" action="#{aluguelMB.navEditar()}" value="Editar" update="mainContent" styleClass="fa fa-lg fa-green fa-search-plus"> 
+					<p:commandLink style="padding-left: 5px;" action="#{aluguelMB.navEditar()}" update="mainContent" styleClass="fa fa-lg fa-green fa-search-plus"> 
 						<h:graphicImage library="aluguefacil" name="/imagens/iconEditar.png" alt="Editar" title="Editar" />
 						<f:setPropertyActionListener value="#{item}" target="#{aluguelMB.aluguelSelecionadoRS}"/>
 					</p:commandLink>
@@ -227,11 +227,11 @@
 				</p:commandButton>
 				
 				<p:commandButton  value="Buscar Casa" style="margin-top: 5px; border-top: 1px solid #d3d3d3; clear: both; width: 210px;"
-					 process="@this" onclick="PF('pesquisarCasa').show();" > 
+					 process="@this" onclick="PF('pesquisarCasa').show();" rendered="#{aluguelMB.alugando or aluguelMB.editando}"> 
 				</p:commandButton>
 				
 				<p:commandButton  value="Buscar Inquilino" style="margin-top: 5px; border-top: 1px solid #d3d3d3; clear: both; width: 210px;"
-					 process="@this" onclick="PF('addPessoa').show();" > 
+					 process="@this" onclick="PF('addPessoa').show();" rendered="#{aluguelMB.alugando or aluguelMB.editando}"> 
 				</p:commandButton>
 				
 				
@@ -242,16 +242,65 @@
 		</p:outputPanel>
 		
 		<p:dialog header="Pesquisar Casa" id="idPopupPesquisarCasa" widgetVar="pesquisarCasa" modal="true" draggable="false" closable="true" resizable="false"> 
-			<p:panelGrid columns="2">	
-			</p:panelGrid>			
-			
-			<p:outputPanel styleClass="painelBotoes" id="botoesPopupArqueacao">
-				<p:commandButton value="Salvar" process="@this"  update=":mainContent" />				
-				<p:commandButton value="Fechar" onclick="PF('pesquisarCasa').hide();" process="@this" />
+			<p:messages id="msgAddCasa" autoUpdate="false" showIcon="false" closable="true" showSummary="false" showDetail="true" />
+			<p:outputPanel id="popupAddCasa">
+				<div class="ui-fluid" >
+					<h:panelGrid columns="3" cellpadding="5">
+						<p:row>
+							<p:column>
+								<p:outputLabel value="Bairro" />
+								<p:inputText id="idFiltroBairroPopup" value="#{aluguelMB.filtroBairroPopup}" maxlength="50"/>
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<p:outputLabel value="Rua" />
+								<p:inputText id="idFiltroRuaPopup" value="#{aluguelMB.filtroRuaPopup}" maxlength="50"/>
+							</p:column>
+						</p:row>
+						<p:row >
+							<p:column >
+								<p:outputLabel value="Número" />
+								<p:inputText id="idFiltroNumeroPopup" value="#{aluguelMB.filtroNumeroPopup}" maxlength="50"/>
+							</p:column>
+						</p:row>
+							<p:commandButton id="btPesquisarCasas" value="Pesquisar" update="resultadoCasa" action="#{aluguelMB.acaoPesquisarCasa()}" 
+								process="@this idFiltroBairroPopup, idFiltroRuaPopup, idFiltroNumeroPopup" />
+					</h:panelGrid>
+				</div>
+				<hr />
+				<p:dataTable style="width: 840px;"  id="resultadoCasa" var="item" rows="5"
+					value="#{aluguelMB.casaList}" emptyMessage="Nenhum registro encontrado" paginator="true" rowIndexVar="linha"
+					paginatorPosition="bottom" 
+					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords}">
+					<p:column headerText="Bairro" style="width: 200px;">
+						<h:outputText value="#{item.bairro}" />
+					</p:column>
+					<p:column headerText="Rua">                                                                                                  
+						<h:outputText value="#{item.rua}" />
+					</p:column>
+					<p:column headerText="N°" style="width: 60px;">                                                                                                  
+						<h:outputText value="#{item.numero}" />
+					</p:column>
+					<p:column headerText="Ações" styleClass="centralizarTexto colunaAcao" style="width: 60px;">
+						<p:commandLink onsuccess="PF('pesquisarCasa').hide();" action="#{aluguelMB.acaoAdicionarCasa()}" update=":mainContent" process="@this">
+							<h:graphicImage library="aluguefacil" name="/imagens/iconSelect.png" alt="Selecionar" title="Selecionar" />
+							<f:setPropertyActionListener target="#{aluguelMB.casaSelecionada}" value="#{item}" />
+						</p:commandLink>
+					</p:column>
+				</p:dataTable>
+				<hr />
+				<p:outputPanel styleClass="painelBotoes">
+					<p:commandButton value="Limpar" action="#{aluguelMB.acaoLimparPesquisaCasa()}" update="resultadoCasa popupAddCasa " process="@this"/>
+					<p:commandButton value="Cancelar" type="button" onclick="PF('pesquisarCasa').hide();" />
+				</p:outputPanel>
+				<p:defaultCommand target="btPesquisarCasas" scope="popupAddCasa"/>
 			</p:outputPanel>
 		</p:dialog>
 		
 		<p:dialog header="Adicionar Pessoa" widgetVar="addPessoa" modal="true" resizable="false" closable="true">
+			<p:messages id="msgAddPessoa" autoUpdate="false" showIcon="false" closable="true" showSummary="false" showDetail="true" />
 			<p:outputPanel id="popupAddPessoa">
 				<h:panelGrid id="pesquisaPessoas" columns="5">
 					<p:outputLabel value="Filtrar Por: " for="filtroPessoa"/>
@@ -264,8 +313,10 @@
 								rendered="${aluguelMB.filtroTipoPesquisaPessoa eq 'NOME'}"/>
 					<p:inputMask mask="999.999.999-99" value="#{aluguelMB.filtroPessoa}" id="filtroPesquisaPessoaCpf" 
 									rendered="${aluguelMB.filtroTipoPesquisaPessoa eq 'CPF'}"/>
-					<p:commandButton id="btPesquisarPessoas" value="Pesquisar" update="resultadoPessoa" action="#{aluguelMB.acaoPesquisarInquilino()}" process="@this filtroPessoa filtroPesquisaPessoaNome filtroPesquisaPessoaCpf" />				
+					<p:commandButton id="btPesquisarPessoas" value="Pesquisar" update="resultadoPessoa" action="#{aluguelMB.acaoPesquisarInquilino()}" 
+						process="@this filtroPessoa filtroPesquisaPessoaNome filtroPesquisaPessoaCpf" />				
 				</h:panelGrid>
+				<hr />
 				<p:dataTable style="width: 600px;" id="resultadoPessoa" var="item" rows="5"
 					value="#{aluguelMB.inquilinoList}" emptyMessage="Nenhum registro encontrado" paginator="true" rowIndexVar="linha"
 					paginatorPosition="bottom" 
@@ -278,7 +329,7 @@
 						<h:outputText value="#{item.cpf}" />
 					</p:column>
 					<p:column headerText="Ações" styleClass="centralizarTexto colunaAcao">
-						<p:commandLink onsuccess="PF('addPessoa').hide();" action="#{aluguelMB.acaoAdicionarInquilino()}" update=":mainContent" process="@this mainContent">
+						<p:commandLink onsuccess="PF('addPessoa').hide();" action="#{aluguelMB.acaoAdicionarInquilino()}" update=":mainContent" process="@this">
 							<h:graphicImage library="aluguefacil" name="/imagens/iconSelect.png" alt="Selecionar" title="Selecionar" />
 							<f:setPropertyActionListener target="#{aluguelMB.inquilinoSelecionado}" value="#{item}" />
 						</p:commandLink>
@@ -286,7 +337,7 @@
 				</p:dataTable>
 				<hr />
 				<p:outputPanel styleClass="painelBotoes">
-					<p:commandButton value="Limpar" action="#{aluguelMB.acaoLimparPesquisaPopup()}" update="resultadoPessoa popupAddPessoa " process="@this"/>
+					<p:commandButton value="Limpar" action="#{aluguelMB.acaoLimparPesquisaInquilino()}" update="resultadoPessoa popupAddPessoa " process="@this"/>
 					<p:commandButton value="Cancelar" type="button" onclick="PF('addPessoa').hide();" />
 				</p:outputPanel>
 				<p:defaultCommand target="btPesquisarPessoas" scope="popupAddPessoa"/>

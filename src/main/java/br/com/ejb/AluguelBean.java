@@ -7,6 +7,7 @@ import javax.ejb.Stateless;
 
 import br.com.DAO.AluguelDAO;
 import br.com.model.Aluguel;
+import br.com.model.Casa;
 import br.com.model.Inquilino;
 import br.com.model.Aluguel.StatusAluguel;
 import br.com.model.resultset.AluguelRS;
@@ -37,6 +38,14 @@ public class AluguelBean extends GenericBean<Aluguel> {
 	
 	public List<Inquilino> pesquisarInquilino(String filtroNome, String filtroCpf) {
 		return getAluguelDAO().pesquisarInquilino(filtroNome, filtroCpf);
+	}
+	
+	public List<Casa> pesquisarCasa(String filtroBairro, String filtroRua, Integer filtroNumero) {
+		return getAluguelDAO().pesquisarCasa(filtroBairro, filtroRua, filtroNumero);
+	}
+	
+	public Long pesquisarSeCasaAlugada(Long idCasa) {
+		return getAluguelDAO().pesquisarSeCasaAlugada(idCasa);
 	}
 
 }

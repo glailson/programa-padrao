@@ -10,9 +10,12 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
+import org.primefaces.context.RequestContext;
+
 import br.com.ejb.AluguelBean;
 import br.com.model.Aluguel;
 import br.com.model.Aluguel.StatusAluguel;
+import br.com.model.Casa;
 import br.com.model.Inquilino;
 import br.com.model.Util;
 import br.com.model.resultset.AluguelRS;
@@ -32,11 +35,14 @@ public class AluguelMB extends MainMB implements Serializable {
 	private String subTitulo, labelBtSalvar;
 	private List<Inquilino> inquilinoList;
 	private Inquilino inquilinoSelecionado;
+	private List<Casa> casaList;
+	private Casa casaSelecionada;
 	//FILTROS
 	private Long filtroCodigo;
-	private String filtroCpf, filtroNome, filtroBairro, filtroRua, filtroPessoa, filtroTipoPesquisaPessoa;
+	private String filtroCpf, filtroNome, filtroBairro, filtroRua, filtroPessoa, filtroTipoPesquisaPessoa,
+	filtroBairroPopup, filtroRuaPopup;
 	private StatusAluguel filtroStatus;
-	private Integer filtroVencimento;
+	private Integer filtroVencimento, filtroNumeroPopup;
 	private Date filtroDataInicial,filtroDataFinal;
 	
 	@PostConstruct
@@ -52,6 +58,7 @@ public class AluguelMB extends MainMB implements Serializable {
 		} else {
 			if (Acao.alugar.equals(acaoAtual)) {
 				aluguel = new Aluguel();
+				aluguel.setStatus(StatusAluguel.ATIVO);
 				subTitulo = "Realizar Aluguel";
 				labelBtSalvar = "Salvar";
 			} else  {
@@ -127,6 +134,41 @@ public class AluguelMB extends MainMB implements Serializable {
 		filtroPessoa = "";
 	}
 	
+	public void acaoPesquisarCasa () {
+		casaList = aluguelBean.pesquisarCasa(filtroBairroPopup, filtroRuaPopup, filtroNumeroPopup);
+	}
+	
+	public void acaoAdicionarInquilino () {
+		aluguel.setInquilino(inquilinoSelecionado);
+	}
+	
+	public void acaoAdicionarCasa () {
+		Long idAluguel = aluguelBean.pesquisarSeCasaAlugada(casaSelecionada.getNumSequencial());
+		if (idAluguel != null) {
+			addErroMessage("Casa já alugada. Aluguel " + idAluguel);
+			RequestContext.getCurrentInstance().execute("PF('pesquisarCasa').show();");
+		} else {
+			aluguel.setCasa(casaSelecionada);
+		}
+	}
+	
+	public void acaoLimparPesquisaInquilino() {
+		filtroTipoPesquisaPessoa = "CPF";
+		filtroRuaPopup = null;
+		filtroNumeroPopup = null;
+		if (Util.validaListDefault(inquilinoList)) {
+			inquilinoList.clear();
+		}
+	}
+	
+	public void acaoLimparPesquisaCasa() {
+		filtroBairroPopup = null;
+		filtroPessoa = null;
+		if (Util.validaListDefault(casaList)) {
+			casaList.clear();
+		}
+	}
+	
 	public void navVoltarParaPesquisa() {
 		if (aluguel != null ) {
 			aluguel = null;
@@ -135,18 +177,6 @@ public class AluguelMB extends MainMB implements Serializable {
 			aluguelSelecionadoRS = null;
 		}
 		render(Acao.pesquisar);
-	}
-	
-	public void acaoAdicionarInquilino () {
-		aluguel.setInquilino(inquilinoSelecionado);
-	}
-	
-	public void acaoLimparPesquisaPopup() {
-		filtroTipoPesquisaPessoa = "CPF";
-		filtroPessoa = null;
-		if (Util.validaListDefault(inquilinoList)) {
-			inquilinoList.clear();
-		}
 	}
 	
 	public void navPesquisar() {
@@ -324,6 +354,46 @@ public class AluguelMB extends MainMB implements Serializable {
 
 	public void setInquilinoSelecionado(Inquilino inquilinoSelecionado) {
 		this.inquilinoSelecionado = inquilinoSelecionado;
+	}
+
+	public List<Casa> getCasaList() {
+		return casaList;
+	}
+
+	public void setCasaList(List<Casa> casaList) {
+		this.casaList = casaList;
+	}
+
+	public Casa getCasaSelecionada() {
+		return casaSelecionada;
+	}
+
+	public void setCasaSelecionada(Casa casaSelecionada) {
+		this.casaSelecionada = casaSelecionada;
+	}
+
+	public String getFiltroBairroPopup() {
+		return filtroBairroPopup;
+	}
+
+	public void setFiltroBairroPopup(String filtroBairroPopup) {
+		this.filtroBairroPopup = filtroBairroPopup;
+	}
+
+	public String getFiltroRuaPopup() {
+		return filtroRuaPopup;
+	}
+
+	public void setFiltroRuaPopup(String filtroRuaPopup) {
+		this.filtroRuaPopup = filtroRuaPopup;
+	}
+
+	public Integer getFiltroNumeroPopup() {
+		return filtroNumeroPopup;
+	}
+
+	public void setFiltroNumeroPopup(Integer filtroNumeroPopup) {
+		this.filtroNumeroPopup = filtroNumeroPopup;
 	}
 
 	private static enum Acao {

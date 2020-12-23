@@ -49,6 +49,14 @@ public class Casa implements GenericEntity<Long> {
 		// TODO Auto-generated constructor stub
 	}
 
+	public Casa(Long numSequencial, String bairro, String rua, Integer numero) {
+		super();
+		this.numSequencial = numSequencial;
+		this.bairro = bairro;
+		this.rua = rua;
+		this.numero = numero;
+	}
+
 	public Long getNumSequencial() {
 		return numSequencial;
 	}

@@ -30,7 +30,7 @@ public class Aluguel implements GenericEntity<Long> {
     @Column(name = "alnumsequencial")
 	private Long numSequencial;
 	@Enumerated(EnumType.STRING)
-	@Column(name = "restatusparaclientes")
+	@Column(name = "alstatus")
 	private StatusAluguel status;
 	@ManyToOne
 	@JoinColumn(name = "alcasa", referencedColumnName = "canumsequencial")
@@ -50,6 +50,9 @@ public class Aluguel implements GenericEntity<Long> {
 	@Size(max=255)
     @Column(name="alobservacao")
     private String observacao;
+	@Enumerated(EnumType.STRING)
+	@Column(name = "alsituacao")
+	private SituacaoAluguel situacao;
 	
 	public Aluguel() {
 		// TODO Auto-generated constructor stub
@@ -127,6 +130,14 @@ public class Aluguel implements GenericEntity<Long> {
 		this.observacao = observacao;
 	}
 
+	public SituacaoAluguel getSituacao() {
+		return situacao;
+	}
+
+	public void setSituacao(SituacaoAluguel situacao) {
+		this.situacao = situacao;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -152,10 +163,39 @@ public class Aluguel implements GenericEntity<Long> {
 		return true;
 	}
 	
-	public static enum StatusAluguel {
+	public static enum SituacaoAluguel {
 		PAGO(0L,"Pago"),
 		EM_DIA(1L,"Em Dia"),
 		ATRASADO(2L,"Atrasado");
+		
+		private Long numSequencial;
+		private String descricao;
+		
+		private SituacaoAluguel() {
+		}
+		
+		private SituacaoAluguel(Long numSequencial, String descricao) {
+			this.numSequencial = numSequencial;
+			this.descricao = descricao;
+		}
+		
+		public Long getNumSequencial() {
+			return numSequencial;
+		}
+		public void setNumSequencial(Long numSequencial) {
+			this.numSequencial = numSequencial;
+		}
+		public String getDescricao() {
+			return descricao;
+		}
+		public void setDescricao(String descricao) {
+			this.descricao = descricao;
+		}
+	}
+	
+	public static enum StatusAluguel {
+		ATIVO(0L,"Ativo"),
+		INATIVO(1L,"Inativo");
 		
 		private Long numSequencial;
 		private String descricao;

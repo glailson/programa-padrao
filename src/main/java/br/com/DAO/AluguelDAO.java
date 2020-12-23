@@ -76,6 +76,8 @@ public class AluguelDAO extends GenericDAO<Aluguel> {
 				AluguelRS.class,
 					root.get( Aluguel_.numSequencial ),
 					aluInqJoin.get( Inquilino_.nome ),
+					aluInqJoin.get( Inquilino_.nomeGuerra ),
+					aluCasaJoin.get( Casa_.bairro ),
 					aluCasaJoin.get( Casa_.rua ),
 					aluCasaJoin.get( Casa_.numero ),
 					root.get( Aluguel_.status ),
@@ -116,6 +118,65 @@ public class AluguelDAO extends GenericDAO<Aluguel> {
 			);
 		try{
 			return entityManager.createQuery(criteria).getResultList();
+		}catch(NoResultException nre){
+			return null;
+		}
+	}
+	
+	public List<Casa> pesquisarCasa(String filtroBairro, String filtroRua, Integer filtroNumero) {
+		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Casa> criteria = builder.createQuery(Casa.class);
+		Root<Casa> root = criteria.from(Casa.class);
+		
+		List<Predicate> and = new ArrayList();
+		{	
+			if (Util.validaStringDefault(filtroBairro)) {
+				and.add(builder.like(builder.upper(root.get(Casa_.bairro)), "%" + filtroBairro.toUpperCase() + "%"));
+			} 
+			if (Util.validaStringDefault(filtroRua)) {
+				and.add(builder.like(builder.upper(root.get(Casa_.rua)), "%" + filtroRua.toUpperCase() + "%"));
+			}
+			if (filtroNumero != null) {
+				and.add(builder.equal(root.get(Casa_.numero), filtroNumero));
+			}
+		}
+		criteria.distinct(true);
+		criteria.orderBy(builder.desc(root.get(Casa_.numSequencial)));
+		criteria.where(and.toArray(new Predicate[and.size()]));
+		criteria.select( 
+			builder.construct(
+				Casa.class,
+					root.get( Casa_.numSequencial ),
+					root.get( Casa_.bairro ),
+					root.get( Casa_.rua ),
+					root.get( Casa_.numero )
+				)
+			);
+		try{
+			return entityManager.createQuery(criteria).getResultList();
+		}catch(NoResultException nre){
+			return null;
+		}
+	}
+	
+	public Long pesquisarSeCasaAlugada(Long idCasa) {
+		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Long> criteria = builder.createQuery(Long.class);
+		Root<Aluguel> root = criteria.from(Aluguel.class);
+		
+		Join<Aluguel, Casa>  aluCasaJoin = root.join(Aluguel_.casa, javax.persistence.criteria.JoinType.LEFT);
+		List<Predicate> and = new ArrayList<>();
+		{
+			if (idCasa != null && idCasa != 0) {
+				and.add(builder.equal(aluCasaJoin.get(Casa_.numSequencial), idCasa));
+			}
+			and.add(builder.equal(root.get(Aluguel_.status), StatusAluguel.ATIVO));
+		}
+		criteria.select(root.get(Aluguel_.numSequencial));
+		criteria.orderBy(builder.desc(root.get(Aluguel_.numSequencial)));
+		criteria.where(and.toArray(new Predicate[and.size()]));
+		try{
+			return (Long) getEntityManager().createQuery(criteria).setMaxResults(1).getSingleResult();
 		}catch(NoResultException nre){
 			return null;
 		}

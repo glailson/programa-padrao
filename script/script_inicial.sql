@@ -65,6 +65,7 @@ ALTER TABLE aluguefacil.tbaluguel
   
   
 ALTER TABLE aluguefacil.tbaluguel ADD COLUMN  alvalor numeric(5,2);
+ALTER TABLE aluguefacil.tbaluguel ADD COLUMN  alsituacao varchar(50);
 
   
 CREATE TABLE aluguefacil.tbpagamentoaluguel
