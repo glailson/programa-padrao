@@ -54,7 +54,7 @@
 			</div>
 			<p:dataTable id="idCasaList" styleClass="resultados" var="item" value="#{inquilinoMB.inquilinoRSList}" rows="10" emptyMessage="Nenhum registro encontrado" paginator="true"
 				paginatorPosition="bottom" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowIndexVar="linha"
-				currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords}">
+				currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords}">
 				<p:column colspan="1" headerText="Código" styleClass="centralizarTexto" style="width: 100px;">
 					<h:outputText value="${item.numSequencial}" />
 				</p:column>
@@ -72,10 +72,12 @@
 					</h:outputText>
 				</p:column>
 				<p:column headerText="Ações" styleClass="centralizarTexto" style="width: 100px;">
-					<p:commandLink action="#{inquilinoMB.navVisualizar()}" value="Visualizar  " update="mainContent" styleClass="fa fa-lg fa-green fa-search-plus"> 
+					<p:commandLink action="#{inquilinoMB.navVisualizar()}" update="mainContent" > 
+						<h:graphicImage library="aluguefacil" name="/imagens/iconPesquisar.png" alt="Visualizar" title="Visualizar" />
 						<f:setPropertyActionListener value="#{item}" target="#{inquilinoMB.inquilinoSelecionadoRS}"/>
 					</p:commandLink>
-					<p:commandLink action="#{inquilinoMB.navEditar()}" value="Editar" update="mainContent" styleClass="fa fa-lg fa-green fa-search-plus"> 
+					<p:commandLink style="padding-left: 5px;" action="#{inquilinoMB.navEditar()}" update="mainContent" > 
+						<h:graphicImage library="aluguefacil" name="/imagens/iconEditar.png" alt="Editar" title="Editar" />
 						<f:setPropertyActionListener value="#{item}" target="#{inquilinoMB.inquilinoSelecionadoRS}"/>
 					</p:commandLink>
 				</p:column>

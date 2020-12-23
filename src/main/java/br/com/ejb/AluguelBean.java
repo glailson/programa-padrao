@@ -7,6 +7,7 @@ import javax.ejb.Stateless;
 
 import br.com.DAO.AluguelDAO;
 import br.com.model.Aluguel;
+import br.com.model.Inquilino;
 import br.com.model.Aluguel.StatusAluguel;
 import br.com.model.resultset.AluguelRS;
 
@@ -32,6 +33,10 @@ public class AluguelBean extends GenericBean<Aluguel> {
 	public List<AluguelRS> pesquisarRs(Long filtroCodigo, String filtroNome, String filtroCpf, StatusAluguel filtroStatus, 
 			String filtroBairro, String filtroRua, Date filtroDataInicial, Date filtroDataFinal) {
 		return getAluguelDAO().pesquisarRs(filtroCodigo, filtroNome, filtroCpf, filtroStatus, filtroBairro, filtroRua, filtroDataInicial, filtroDataFinal);
+	}
+	
+	public List<Inquilino> pesquisarInquilino(String filtroNome, String filtroCpf) {
+		return getAluguelDAO().pesquisarInquilino(filtroNome, filtroCpf);
 	}
 
 }

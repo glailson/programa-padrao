@@ -7,7 +7,7 @@ import javax.persistence.metamodel.ListAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
-@Generated(value="Dali", date="2020-12-22T12:30:53.477-0300")
+@Generated(value="Dali", date="2020-12-22T15:13:16.539-0300")
 @StaticMetamodel(Aluguel.class)
 public class Aluguel_ {
 	public static volatile SingularAttribute<Aluguel, Long> numSequencial;
@@ -18,4 +18,5 @@ public class Aluguel_ {
 	public static volatile ListAttribute<Aluguel, PagamentoAluguel> pagamentosAluguelList;
 	public static volatile SingularAttribute<Aluguel, Integer> vencimento;
 	public static volatile SingularAttribute<Aluguel, Double> valor;
+	public static volatile SingularAttribute<Aluguel, String> observacao;
 }

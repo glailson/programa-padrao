@@ -110,31 +110,35 @@
 				</p:outputPanel>
 				<br />
 			</div>
-			<p:dataTable id="idCasaList" styleClass="resultados" var="item" value="#{inquilinoMB.inquilinoRSList}" rows="10" emptyMessage="Nenhum registro encontrado" paginator="true"
+			<p:dataTable id="idCasaList" styleClass="resultados" var="item" value="#{aluguelMB.aluguelRSList}" rows="10" emptyMessage="Nenhum registro encontrado" paginator="true"
 				paginatorPosition="bottom" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowIndexVar="linha"
-				currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords}">
-				<p:column colspan="1" headerText="Código" styleClass="centralizarTexto" style="width: 100px;">
-					<h:outputText value="${item.numSequencial}" />
-				</p:column>
+				currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords}">
 				<p:column colspan="1" headerText="Nome" styleClass="centralizarTexto" >
 					<h:outputText value="${item.nome}"/>
 				</p:column>
-				<p:column colspan="1" headerText="CPF" styleClass="centralizarTexto" style="width: 150px;">
-					<h:outputText value="${item.cpf}">
-						<f:converter converterId="CpfCnpjConverter" />
-					</h:outputText>
+				<p:column colspan="1" headerText="Bairro" styleClass="centralizarTexto" style="width: 150px;">
+					<h:outputText value="${item.bairro}" />
 				</p:column>
-				<p:column colspan="2" headerText="Telefone" styleClass="centralizarTexto" style="width: 150px;">
-					<h:outputText value="${item.telefone}"> 
-						<f:converter converterId="TelefoneConverter" />
-					</h:outputText>
+				<p:column colspan="2" headerText="Rua" styleClass="centralizarTexto" style="width: 150px;">
+					<h:outputText value="${item.rua}" /> 
+				</p:column>
+				<p:column colspan="2" headerText="N°" styleClass="centralizarTexto" style="width: 60px;">
+					<h:outputText value="${item.numero}" /> 
+				</p:column>
+				<p:column colspan="2" headerText="Status" styleClass="centralizarTexto" style="width: 70px;">
+					<h:outputText value="${item.status.descricao}" /> 
+				</p:column>
+				<p:column colspan="2" headerText="Venc." styleClass="centralizarTexto" style="width: 60px;">
+					<h:outputText value="${item.vencimento}" /> 
 				</p:column>
 				<p:column headerText="Ações" styleClass="centralizarTexto" style="width: 100px;">
-					<p:commandLink action="#{inquilinoMB.navVisualizar()}" value="Visualizar  " update="mainContent" styleClass="fa fa-lg fa-green fa-search-plus"> 
-						<f:setPropertyActionListener value="#{item}" target="#{inquilinoMB.inquilinoSelecionadoRS}"/>
+					<p:commandLink action="#{aluguelMB.navVisualizar()}" value="Visualizar  " update="mainContent" styleClass="fa fa-lg fa-green fa-search-plus">
+						<h:graphicImage library="aluguefacil" name="/imagens/iconPesquisar.png" alt="Visualizar" title="Visualizar" /> 
+						<f:setPropertyActionListener value="#{item}" target="#{aluguelMB.aluguelSelecionadoRS}"/>
 					</p:commandLink>
-					<p:commandLink action="#{inquilinoMB.navEditar()}" value="Editar" update="mainContent" styleClass="fa fa-lg fa-green fa-search-plus"> 
-						<f:setPropertyActionListener value="#{item}" target="#{inquilinoMB.inquilinoSelecionadoRS}"/>
+					<p:commandLink style="padding-left: 5px;" action="#{aluguelMB.navEditar()}" value="Editar" update="mainContent" styleClass="fa fa-lg fa-green fa-search-plus"> 
+						<h:graphicImage library="aluguefacil" name="/imagens/iconEditar.png" alt="Editar" title="Editar" />
+						<f:setPropertyActionListener value="#{item}" target="#{aluguelMB.aluguelSelecionadoRS}"/>
 					</p:commandLink>
 				</p:column>
 			</p:dataTable>
@@ -150,58 +154,60 @@
 			<h:panelGrid columns="3" cellpadding="5">
 				<p:row>
 					<p:outputLabel value="Código" />
-					<p:inputText value="${inquilinoMB.inquilino.numSequencial}" disabled="true" />
+					<p:inputText value="${aluguelMB.aluguel.numSequencial}" disabled="true" />
 				</p:row>
 				<p:row>
 					<p:column>
 						<p:outputLabel value="Situação" />
-						<p:inputText value="ATIVO" disabled="true" />
+						<p:inputText value="${aluguelMB.aluguel.status.descricao}" disabled="true" />
 					</p:column>
 				</p:row>
 				<p:row>
-					<p:outputLabel value="Data Cadastro" />
-					<p:inputText value="${inquilinoMB.inquilino.dtHrCadastro}" disabled="true">
+					<p:outputLabel value="Data Aluguel" />
+					<p:inputText value="${aluguelMB.aluguel.dtHrAluguel}" disabled="true">
 						<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
 					</p:inputText>
 				</p:row>
 				<p:row>
 					<p:outputLabel value="Nome" for="idNome" />
-					<p:inputText id="idNome" value="#{inquilinoMB.inquilino.nome}" disabled="${inquilinoMB.visualizando}" title="${inquilinoMB.inquilino.nome}"
-						required="${inquilinoMB.cadastrando or inquilinoMB.editando}" requiredMessage="Campo 'Nome' obrigatório."/>
+					<p:inputText id="idNome" value="#{aluguelMB.aluguel.inquilino.nome}" disabled="true" title="${aluguelMB.aluguel.inquilino.nome}"/>
 				</p:row>
 				<p:row>
 					<p:outputLabel value="CPF" for="idCpf"/>
 					<p:inputMask id="idCpf" mask="999.999.999-99" 
-						value="#{inquilinoMB.inquilino.cpf}" disabled="${inquilinoMB.visualizando}" title="${inquilinoMB.inquilino.cpf}"
-					 	required="${inquilinoMB.cadastrando or inquilinoMB.editando}" requiredMessage="Campo 'CPF' obrigatório."/>  
+						value="#{aluguelMB.aluguel.inquilino.cpf}" disabled="true" title="${aluguelMB.aluguel.inquilino.cpf}"/>  
+				</p:row>
+			
+				<p:row>
+					<p:outputLabel value="Bairro" for="idBairro"/>
+					<p:inputText id="idBairro" value="#{aluguelMB.aluguel.casa.bairro}" disabled="true" title="${inquilinoMB.inquilino.nomeGuerra}" />
 				</p:row>
 				
 				<p:row>
-					<p:outputLabel value="Telefone" for="idTelefone"/>
-					<p:inputMask id="idTelefone" mask="(99)9999-9999?9" 
-						value="#{inquilinoMB.inquilino.telefone}" disabled="${inquilinoMB.visualizando}" title="${inquilinoMB.inquilino.telefone}"
-					 	required="${inquilinoMB.cadastrando or inquilinoMB.editando}" requiredMessage="Campo 'Telefone' obrigatório."/>  
+					<p:outputLabel value="Rua" for="idRua"/>
+					<p:inputText id="idRua" value="#{aluguelMB.aluguel.casa.rua}" disabled="true" title="${aluguelMB.aluguel.casa.rua}" />
 				</p:row>
 				
 				<p:row>
-					<p:outputLabel value="Nome de Guerra" for="idNomeGuerra"/>
-					<p:inputText id="idNomeGuerra" value="#{inquilinoMB.inquilino.nomeGuerra}" disabled="${inquilinoMB.visualizando}" title="${inquilinoMB.inquilino.nomeGuerra}" />
+					<p:outputLabel value="Número" for="idNumero"/>
+					<p:inputNumber id="idNumero" value="#{aluguelMB.aluguel.casa.numero}" disabled="true" title="${inquilinoMB.inquilino.telefoneFiador}"/>
 				</p:row>
 				
 				<p:row>
-					<p:outputLabel value="Nome Fiador" for="idNomeFiador"/>
-					<p:inputText id="idNomeFiador" value="#{inquilinoMB.inquilino.nomeFiador}" disabled="${inquilinoMB.visualizando}" title="${inquilinoMB.inquilino.nomeFiador}" />
+					<p:outputLabel value="Dia Vencimento" for="idVencimento"/>
+					<p:inputText id="idVencimento" value="#{aluguelMB.aluguel.vencimento}" disabled="${aluguelMB.visualizando}" 
+						required="#{aluguelMB.alugando or aluguelMB.editando}" requiredMessage="Campo 'Dia Vencimento' obrigatório."/>
 				</p:row>
 				
 				<p:row>
-					<p:outputLabel value="Telefone Fiador" for="idTelefoneFiador"/>
-					<p:inputMask id="idTelefoneFiador" mask="(99)9999-9999?9" 
-						value="#{inquilinoMB.inquilino.telefoneFiador}" disabled="${inquilinoMB.visualizando}" title="${inquilinoMB.inquilino.telefoneFiador}"/>  
-				</p:row>
-				
-				<p:row>
-					<p:outputLabel value="Profissão" for="idProfissao"/>
-					<p:inputText id="idProfissao" value="#{inquilinoMB.inquilino.profissao}" disabled="${inquilinoMB.visualizando}" title="${inquilinoMB.inquilino.profissao}" />
+					<p:outputLabel value="Valor" for="idValor"/> 
+					
+					<p:inputText value="#{aluguelMB.aluguel.valor}" rendered="${aluguelMB.visualizando}" disabled="true">
+							<f:convertNumber pattern="R$ #,###,##0.00" />
+					</p:inputText>
+					<p:inputNumber id="idValor" decimalPlaces="2" value="#{aluguelMB.aluguel.valor}" symbol=" R$ "
+						symbolPosition="p" disabled="${aluguelMB.visualizando}" rendered="${not aluguelMB.visualizando}"
+						required="#{aluguelMB.alugando or aluguelMB.editando}" requiredMessage="Campo 'Valor' obrigatório."/>
 				</p:row>
 				
 			</h:panelGrid>
@@ -209,8 +215,8 @@
 				<p:row>
 				<p:outputLabel value="Observação" />
 				<p:inputTextarea id="idObservacao" rows="3" cols="100" maxlength="255" autoResize="false"
-					value="#{inquilinoMB.inquilino.observacao}" counter="idObservacaoCount" counterTemplate="{0} letras restantes."
-					disabled="${inquilinoMB.visualizando}"/> 
+					value="#{aluguelMB.aluguel.observacao}" counter="idObservacaoCount" counterTemplate="{0} letras restantes."
+					disabled="${aluguelMB.visualizando}"/> 
 					<br/><h:outputText id="idObservacaoCount"/>
 				</p:row>
 			</h:panelGrid>
@@ -219,10 +225,74 @@
 				<p:commandButton id="idBtVoltar" value="Voltar para Pesquisa" style="margin-top: 5px; border-top: 1px solid #d3d3d3; clear: both; width: 210px;"
 					 process="@this" actionListener="#{aluguelMB.navVoltarParaPesquisa()}" update="mainContent"> 
 				</p:commandButton>
-				<p:commandButton id="idBtSalvar" value="${inquilinoMB.labelBtSalvar}" style="margin-top: 5px; border-top: 1px solid #d3d3d3; clear: both; width: 190px;"
-					 process="@this idDados" actionListener="#{inquilinoMB.acaoSalvar()}" update="mainContent" rendered="#{inquilinoMB.cadastrando or inquilinoMB.editando}"> 
+				
+				<p:commandButton  value="Buscar Casa" style="margin-top: 5px; border-top: 1px solid #d3d3d3; clear: both; width: 210px;"
+					 process="@this" onclick="PF('pesquisarCasa').show();" > 
+				</p:commandButton>
+				
+				<p:commandButton  value="Buscar Inquilino" style="margin-top: 5px; border-top: 1px solid #d3d3d3; clear: both; width: 210px;"
+					 process="@this" onclick="PF('addPessoa').show();" > 
+				</p:commandButton>
+				
+				
+				<p:commandButton value="${aluguelMB.labelBtSalvar}" style="margin-top: 5px; border-top: 1px solid #d3d3d3; clear: both; width: 190px;"
+					 process="@this idDados" actionListener="#{aluguelMB.acaoSalvar()}" update="mainContent" rendered="#{aluguelMB.alugando or aluguelMB.editando}"> 
 				</p:commandButton>
 			</p:outputPanel>
 		</p:outputPanel>
+		
+		<p:dialog header="Pesquisar Casa" id="idPopupPesquisarCasa" widgetVar="pesquisarCasa" modal="true" draggable="false" closable="true" resizable="false"> 
+			<p:panelGrid columns="2">	
+			</p:panelGrid>			
+			
+			<p:outputPanel styleClass="painelBotoes" id="botoesPopupArqueacao">
+				<p:commandButton value="Salvar" process="@this"  update=":mainContent" />				
+				<p:commandButton value="Fechar" onclick="PF('pesquisarCasa').hide();" process="@this" />
+			</p:outputPanel>
+		</p:dialog>
+		
+		<p:dialog header="Adicionar Pessoa" widgetVar="addPessoa" modal="true" resizable="false" closable="true">
+			<p:outputPanel id="popupAddPessoa">
+				<h:panelGrid id="pesquisaPessoas" columns="5">
+					<p:outputLabel value="Filtrar Por: " for="filtroPessoa"/>
+					<p:selectOneMenu id="filtroPessoa" value="#{aluguelMB.filtroTipoPesquisaPessoa}">
+							<f:selectItem itemLabel="CPF" itemValue="CPF" />
+							<f:selectItem itemLabel="Nome" itemValue="NOME" />
+						<p:ajax event="change" update="pesquisaPessoas" listener="#{aluguelMB.limparCampoPesquisaPessoa()}"/>	
+					</p:selectOneMenu>	
+					<p:inputText value="#{aluguelMB.filtroPessoa}" id="filtroPesquisaPessoaNome" 
+								rendered="${aluguelMB.filtroTipoPesquisaPessoa eq 'NOME'}"/>
+					<p:inputMask mask="999.999.999-99" value="#{aluguelMB.filtroPessoa}" id="filtroPesquisaPessoaCpf" 
+									rendered="${aluguelMB.filtroTipoPesquisaPessoa eq 'CPF'}"/>
+					<p:commandButton id="btPesquisarPessoas" value="Pesquisar" update="resultadoPessoa" action="#{aluguelMB.acaoPesquisarInquilino()}" process="@this filtroPessoa filtroPesquisaPessoaNome filtroPesquisaPessoaCpf" />				
+				</h:panelGrid>
+				<p:dataTable style="width: 600px;" id="resultadoPessoa" var="item" rows="5"
+					value="#{aluguelMB.inquilinoList}" emptyMessage="Nenhum registro encontrado" paginator="true" rowIndexVar="linha"
+					paginatorPosition="bottom" 
+					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords}">
+					<p:column headerText="Nome">
+						<h:outputText value="#{item.nome}" />
+					</p:column>
+					<p:column headerText="CPF">                                                                                                  
+						<h:outputText value="#{item.cpf}" />
+					</p:column>
+					<p:column headerText="Ações" styleClass="centralizarTexto colunaAcao">
+						<p:commandLink onsuccess="PF('addPessoa').hide();" action="#{aluguelMB.acaoAdicionarInquilino()}" update=":mainContent" process="@this mainContent">
+							<h:graphicImage library="aluguefacil" name="/imagens/iconSelect.png" alt="Selecionar" title="Selecionar" />
+							<f:setPropertyActionListener target="#{aluguelMB.inquilinoSelecionado}" value="#{item}" />
+						</p:commandLink>
+					</p:column>
+				</p:dataTable>
+				<hr />
+				<p:outputPanel styleClass="painelBotoes">
+					<p:commandButton value="Limpar" action="#{aluguelMB.acaoLimparPesquisaPopup()}" update="resultadoPessoa popupAddPessoa " process="@this"/>
+					<p:commandButton value="Cancelar" type="button" onclick="PF('addPessoa').hide();" />
+				</p:outputPanel>
+				<p:defaultCommand target="btPesquisarPessoas" scope="popupAddPessoa"/>
+			</p:outputPanel>
+		</p:dialog>
+		
+		
 	</ui:define>
 </ui:composition>

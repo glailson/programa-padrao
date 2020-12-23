@@ -88,5 +88,37 @@ public class AluguelDAO extends GenericDAO<Aluguel> {
 			return null;
 		}
 	}
+	
+	public List<Inquilino> pesquisarInquilino(String filtroNome, String filtroCpf) {
+		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Inquilino> criteria = builder.createQuery(Inquilino.class);
+		Root<Inquilino> root = criteria.from(Inquilino.class);
+		
+		List<Predicate> and = new ArrayList();
+		{	
+			if (Util.validaStringDefault(filtroNome)) {
+				and.add(builder.equal(root.get(Inquilino_.cpf), filtroCpf));
+			} 
+			if (Util.validaStringDefault(filtroCpf)) {
+				and.add(builder.like(builder.upper(root.get(Inquilino_.nome)), "%" + filtroNome.toUpperCase() + "%"));
+			}
+		}
+		criteria.distinct(true);
+		criteria.orderBy(builder.desc(root.get(Inquilino_.numSequencial)));
+		criteria.where(and.toArray(new Predicate[and.size()]));
+		criteria.select( 
+			builder.construct(
+				Inquilino.class,
+					root.get( Inquilino_.numSequencial ),
+					root.get( Inquilino_.nome ),
+					root.get( Inquilino_.cpf )
+				)
+			);
+		try{
+			return entityManager.createQuery(criteria).getResultList();
+		}catch(NoResultException nre){
+			return null;
+		}
+	}
 
 }

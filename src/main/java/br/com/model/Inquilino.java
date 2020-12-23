@@ -54,6 +54,13 @@ public class Inquilino implements GenericEntity<Long> {
 		// TODO Auto-generated constructor stub
 	}
 
+	public Inquilino(Long numSequencial, String nome, String cpf) {
+		super();
+		this.numSequencial = numSequencial;
+		this.nome = nome;
+		this.cpf = cpf;
+	}
+
 	public Long getNumSequencial() {
 		return numSequencial;
 	}

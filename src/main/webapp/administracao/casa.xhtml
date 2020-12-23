@@ -72,7 +72,7 @@
 			</div>
 			<p:dataTable id="idCasaList" styleClass="resultados" var="item" value="#{casaMB.casaRsList}" rows="10" emptyMessage="Nenhum registro encontrado" paginator="true"
 				paginatorPosition="bottom" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowIndexVar="linha"
-				currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords}">
+				currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords}">
 				<p:column colspan="1" headerText="Código" styleClass="centralizarTexto">
 					<h:outputText value="${item.numSequencial}" />
 				</p:column>
@@ -88,14 +88,13 @@
 				<p:column headerText="Número" styleClass="centralizarTexto">
 					<h:outputText value="${item.numero}" />
 				</p:column>
-<!-- 				<p:column headerText="Observação" style="text-align: center;"> -->
-<!-- 					<h:outputText value="${item.observacao}" /> -->
-<!-- 				</p:column> -->
 				<p:column headerText="Ações" styleClass="centralizarTexto">
-					<p:commandLink action="#{casaMB.navVisualizar()}" value="Visualizar  " update="mainContent" styleClass="fa fa-lg fa-green fa-search-plus"> 
+					<p:commandLink  action="#{casaMB.navVisualizar()}" update="mainContent" styleClass="fa fa-lg fa-green fa-search-plus"> 
+						<h:graphicImage library="aluguefacil" name="/imagens/iconPesquisar.png" alt="Visualizar" title="Visualizar" />
 						<f:setPropertyActionListener value="#{item}" target="#{casaMB.casaSelecionadaRs}"/>
 					</p:commandLink>
-					<p:commandLink action="#{casaMB.navEditar()}" value="Editar" update="mainContent" styleClass="fa fa-lg fa-green fa-search-plus"> 
+					<p:commandLink style="padding-left: 5px;" action="#{casaMB.navEditar()}" update="mainContent" styleClass="fa fa-lg fa-green fa-search-plus"> 
+						<h:graphicImage library="aluguefacil" name="/imagens/iconEditar.png" alt="Editar" title="Editar" />
 						<f:setPropertyActionListener value="#{item}" target="#{casaMB.casaSelecionadaRs}"/>
 					</p:commandLink>
 				</p:column>

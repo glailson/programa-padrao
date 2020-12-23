@@ -18,6 +18,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name="tbaluguel")
@@ -46,6 +47,9 @@ public class Aluguel implements GenericEntity<Long> {
 	private Integer vencimento;
 	@Column(name = "alvalor")
 	private Double valor;
+	@Size(max=255)
+    @Column(name="alobservacao")
+    private String observacao;
 	
 	public Aluguel() {
 		// TODO Auto-generated constructor stub
@@ -115,6 +119,14 @@ public class Aluguel implements GenericEntity<Long> {
 		this.valor = valor;
 	}
 
+	public String getObservacao() {
+		return observacao;
+	}
+
+	public void setObservacao(String observacao) {
+		this.observacao = observacao;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -141,8 +153,9 @@ public class Aluguel implements GenericEntity<Long> {
 	}
 	
 	public static enum StatusAluguel {
-		ATIVO(0L,"Ativo"),
-		INATIVO(1L,"Inativo");
+		PAGO(0L,"Pago"),
+		EM_DIA(1L,"Em Dia"),
+		ATRASADO(2L,"Atrasado");
 		
 		private Long numSequencial;
 		private String descricao;
