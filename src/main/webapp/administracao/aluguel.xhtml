@@ -102,7 +102,7 @@
 				<hr />
 				<p:outputPanel styleClass="painelBotoes">
 					<p:commandButton id="idBtPesquisa" value="Pesquisar" style="width: 115px; margin-top: 5px;border-top: 1px solid #d3d3d3;clear: both;"
-						 process="@this idPesquisa" action="#{aluguelMB.acaoPesquisar()}" update="idCasaList"> 
+						 process="@this idPesquisa" action="#{aluguelMB.acaoPesquisar()}" update="idAluguelList"> 
 					</p:commandButton>
 					<p:commandButton id="idBtLimpar" value="Limpar" style="width: 115px; margin-top: 5px;border-top: 1px solid #d3d3d3;clear: both;"
 						 process="@this " action="#{aluguelMB.acaoLimparFiltro()}" update="idPesquisa"> 
@@ -110,7 +110,7 @@
 				</p:outputPanel>
 				<br />
 			</div>
-			<p:dataTable id="idCasaList" styleClass="resultados" var="item" value="#{aluguelMB.aluguelRSList}" rows="10" emptyMessage="Nenhum registro encontrado" paginator="true"
+			<p:dataTable id="idAluguelList" styleClass="resultados" var="item" value="#{aluguelMB.aluguelRSList}" rows="10" emptyMessage="Nenhum registro encontrado" paginator="true"
 				paginatorPosition="bottom" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowIndexVar="linha"
 				currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords}">
 				<p:column colspan="1" headerText="Nome" styleClass="centralizarTexto" >
@@ -138,6 +138,10 @@
 					</p:commandLink>
 					<p:commandLink style="padding-left: 5px;" action="#{aluguelMB.navEditar()}" update="mainContent" styleClass="fa fa-lg fa-green fa-search-plus"> 
 						<h:graphicImage library="aluguefacil" name="/imagens/iconEditar.png" alt="Editar" title="Editar" />
+						<f:setPropertyActionListener value="#{item}" target="#{aluguelMB.aluguelSelecionadoRS}"/>
+					</p:commandLink>
+					<p:commandLink style="padding-left: 5px;" action="#{aluguelMB.navPagar()}" update="mainContent" styleClass="fa fa-lg fa-green fa-search-plus"> 
+						<h:graphicImage library="aluguefacil" name="/imagens/iconSelect.png" alt="Pagar" title="Pagar" />
 						<f:setPropertyActionListener value="#{item}" target="#{aluguelMB.aluguelSelecionadoRS}"/>
 					</p:commandLink>
 				</p:column>
@@ -195,31 +199,51 @@
 				
 				<p:row>
 					<p:outputLabel value="Dia Vencimento" for="idVencimento"/>
-					<p:inputText id="idVencimento" value="#{aluguelMB.aluguel.vencimento}" disabled="${aluguelMB.visualizando}" 
+					<p:inputText id="idVencimento" value="#{aluguelMB.aluguel.vencimento}" disabled="${aluguelMB.visualizando or aluguelMB.pagando}" 
 						required="#{aluguelMB.alugando or aluguelMB.editando}" requiredMessage="Campo 'Dia Vencimento' obrigatório."/>
 				</p:row>
 				
 				<p:row>
 					<p:outputLabel value="Valor" for="idValor"/> 
-					
-					<p:inputText value="#{aluguelMB.aluguel.valor}" rendered="${aluguelMB.visualizando}" disabled="true">
+					<p:inputText value="#{aluguelMB.aluguel.valor}" rendered="${aluguelMB.visualizando or aluguelMB.pagando}" disabled="true">
 							<f:convertNumber pattern="R$ #,###,##0.00" />
 					</p:inputText>
 					<p:inputNumber id="idValor" decimalPlaces="2" value="#{aluguelMB.aluguel.valor}" symbol=" R$ "
-						symbolPosition="p" disabled="${aluguelMB.visualizando}" rendered="${not aluguelMB.visualizando}"
+						symbolPosition="p" disabled="${aluguelMB.visualizando}" rendered="${not aluguelMB.visualizando and not aluguelMB.pagando}"
 						required="#{aluguelMB.alugando or aluguelMB.editando}" requiredMessage="Campo 'Valor' obrigatório."/>
 				</p:row>
 				
 			</h:panelGrid>
-			<h:panelGrid columns="6" cellpadding="5">
+			<h:panelGrid columns="6" cellpadding="5" rendered="${not aluguelMB.pagando}">
 				<p:row>
 				<p:outputLabel value="Observação" />
 				<p:inputTextarea id="idObservacao" rows="3" cols="100" maxlength="255" autoResize="false"
 					value="#{aluguelMB.aluguel.observacao}" counter="idObservacaoCount" counterTemplate="{0} letras restantes."
-					disabled="${aluguelMB.visualizando}"/> 
+					disabled="${aluguelMB.visualizando or aluguelMB.pagando}"/> 
 					<br/><h:outputText id="idObservacaoCount"/>
 				</p:row>
 			</h:panelGrid>
+			
+			<h3>Pagamentos</h3>
+			<p:dataTable style="width: 800px;"  id="resultadoPagamento" var="item" rows="5"
+				value="#{aluguelMB.aluguel.pagamentosAluguelList}" emptyMessage="Nenhum registro encontrado" paginator="true" rowIndexVar="linha"
+				paginatorPosition="bottom" 
+				paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords}">
+				<p:column headerText="Recebedor" style="width: 200px;">
+					<h:outputText value="#{item.recebedor}" />
+				</p:column>
+				<p:column headerText="Mês Referência" style="width: 100px;">
+					<h:outputText value="#{item.dtHrReferenciaPagamento}" />
+				</p:column>
+				<p:column headerText="Data" style="width: 100px;">
+					<h:outputText value="#{item.dtHrPagamento}" />
+				</p:column>
+				<p:column headerText="Situação" style="width: 100px;">                                                                                                  
+					<h:outputText value="Pago" />
+				</p:column>
+			</p:dataTable>
+			
 			<p:outputPanel >
 				<hr />
 				<p:commandButton id="idBtVoltar" value="Voltar para Pesquisa" style="margin-top: 5px; border-top: 1px solid #d3d3d3; clear: both; width: 210px;"
@@ -234,6 +258,9 @@
 					 process="@this" onclick="PF('addPessoa').show();" rendered="#{aluguelMB.alugando or aluguelMB.editando}"> 
 				</p:commandButton>
 				
+				<p:commandButton  value="Realizar Pagamento" style="margin-top: 5px; border-top: 1px solid #d3d3d3; clear: both; width: 210px;"
+					 process="@this" action="#{aluguelMB.abrirPopupAdicionarPagamento()}" rendered="#{aluguelMB.pagando}"> 
+				</p:commandButton>
 				
 				<p:commandButton value="${aluguelMB.labelBtSalvar}" style="margin-top: 5px; border-top: 1px solid #d3d3d3; clear: both; width: 190px;"
 					 process="@this idDados" actionListener="#{aluguelMB.acaoSalvar()}" update="mainContent" rendered="#{aluguelMB.alugando or aluguelMB.editando}"> 
@@ -242,8 +269,8 @@
 		</p:outputPanel>
 		
 		<p:dialog header="Pesquisar Casa" id="idPopupPesquisarCasa" widgetVar="pesquisarCasa" modal="true" draggable="false" closable="true" resizable="false"> 
-			<p:messages id="msgAddCasa" autoUpdate="false" showIcon="false" closable="true" showSummary="false" showDetail="true" />
 			<p:outputPanel id="popupAddCasa">
+			<p:messages id="msgAddCasa" autoUpdate="false" showIcon="false" closable="true" showSummary="false" showDetail="true" />
 				<div class="ui-fluid" >
 					<h:panelGrid columns="3" cellpadding="5">
 						<p:row>
@@ -292,7 +319,7 @@
 				</p:dataTable>
 				<hr />
 				<p:outputPanel styleClass="painelBotoes">
-					<p:commandButton value="Limpar" action="#{aluguelMB.acaoLimparPesquisaCasa()}" update="resultadoCasa popupAddCasa " process="@this"/>
+					<p:commandButton value="Limpar" action="#{aluguelMB.acaoLimparPesquisaCasa()}" update="resultadoCasa popupAddCasa" process="@this"/>
 					<p:commandButton value="Cancelar" type="button" onclick="PF('pesquisarCasa').hide();" />
 				</p:outputPanel>
 				<p:defaultCommand target="btPesquisarCasas" scope="popupAddCasa"/>
@@ -300,8 +327,8 @@
 		</p:dialog>
 		
 		<p:dialog header="Adicionar Pessoa" widgetVar="addPessoa" modal="true" resizable="false" closable="true">
-			<p:messages id="msgAddPessoa" autoUpdate="false" showIcon="false" closable="true" showSummary="false" showDetail="true" />
 			<p:outputPanel id="popupAddPessoa">
+			<p:messages id="msgAddPessoa" autoUpdate="false" showIcon="false" closable="true" showSummary="false" showDetail="true" />
 				<h:panelGrid id="pesquisaPessoas" columns="5">
 					<p:outputLabel value="Filtrar Por: " for="filtroPessoa"/>
 					<p:selectOneMenu id="filtroPessoa" value="#{aluguelMB.filtroTipoPesquisaPessoa}">
@@ -344,6 +371,39 @@
 			</p:outputPanel>
 		</p:dialog>
 		
+		<p:dialog header="Realizar Pagamento" widgetVar="addPagamento" modal="true" resizable="false" closable="true" width="500" height="200" >
+			<p:outputPanel id="popupAddPagamento" >
+				<p:messages id="msgAddPagamento" autoUpdate="false" showIcon="false" closable="true" showSummary="false" showDetail="true" />
+				<h5>Mês Referência</h5>
+				<hr />
+				<div class="ui-fluid" >
+					<h:panelGrid columns="3" cellpadding="5">
+						<p:row>
+							<p:column>
+								<p:outputLabel for="dataReferencia" value="Data Referência" />
+						        <p:calendar id="dataReferencia" value="#{aluguelMB.filtroDataInicial}" 
+						        	pattern="dd/MM/yyyy" locale="pt" showButtonPanel="true" 
+						        	navigator="true"/>
+						    </p:column>
+						 </p:row>
+						<p:row>
+							<p:column>
+								<p:outputLabel value="Recebedor" />
+								<p:inputText id="idCodigoRecebedor" value="#{aluguelMB.filtroRua}" maxlength="50"/>
+							</p:column>
+						</p:row>
+					</h:panelGrid>
+				</div>
+				<hr />
+				<p:outputPanel styleClass="painelBotoes"> 
+					<p:commandButton value="Limpar" action="#{aluguelMB.acaoLimparPesquisaInquilino()}"  process="@this"/>
+					<p:commandButton value="Cancelar" type="button" onclick="PF('addPagamento').hide();" />
+					<p:commandButton value="Pagar" process="@this" style="float: right;" update="msgAddPagamento">
+						<p:confirm header="Confirmação de Pagamento" message="Confirmar pagamento?"/>
+					</p:commandButton>
+				</p:outputPanel>
+			</p:outputPanel>
+		</p:dialog>
 		
 	</ui:define>
 </ui:composition>

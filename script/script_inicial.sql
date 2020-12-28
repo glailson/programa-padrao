@@ -86,3 +86,4 @@ ALTER TABLE aluguefacil.tbpagamentoaluguel
   OWNER TO postgres;
   
 ALTER TABLE aluguefacil.tbpagamentoaluguel ADD COLUMN padthrreferenciapagamento timestamp without time zone;
+ALTER TABLE aluguefacil.tbpagamentoaluguel ADD COLUMN pausuariorecebedor varchar(60);

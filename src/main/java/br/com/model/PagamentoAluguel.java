@@ -13,6 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name="tbpagamentoaluguel")
@@ -32,6 +33,9 @@ public class PagamentoAluguel implements GenericEntity<Long> {
 	@Column(name = "padthrreferenciapagamento")
     @Temporal(TemporalType.TIMESTAMP)
 	private Date dtHrReferenciaPagamento;
+	@Size(max=60)
+    @Column(name="pausuariorecebedor")
+    private String recebedor;
 	
 	public PagamentoAluguel() {
 		// TODO Auto-generated constructor stub
@@ -67,6 +71,14 @@ public class PagamentoAluguel implements GenericEntity<Long> {
 
 	public void setDtHrReferenciaPagamento(Date dtHrReferenciaPagamento) {
 		this.dtHrReferenciaPagamento = dtHrReferenciaPagamento;
+	}
+
+	public String getRecebedor() {
+		return recebedor;
+	}
+
+	public void setRecebedor(String recebedor) {
+		this.recebedor = recebedor;
 	}
 
 	@Override

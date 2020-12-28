@@ -5,11 +5,13 @@ import java.util.List;
 
 import javax.ejb.Stateless;
 
+import org.hibernate.Hibernate;
+
 import br.com.DAO.AluguelDAO;
 import br.com.model.Aluguel;
+import br.com.model.Aluguel.StatusAluguel;
 import br.com.model.Casa;
 import br.com.model.Inquilino;
-import br.com.model.Aluguel.StatusAluguel;
 import br.com.model.resultset.AluguelRS;
 
 @Stateless
@@ -24,10 +26,13 @@ public class AluguelBean extends GenericBean<Aluguel> {
 	}
 	
 	public Aluguel pegar(long entityID) {
-		return getAluguelDAO().findById(entityID);
+		Aluguel aluguel = getAluguelDAO().findById(entityID);
+		Hibernate.initialize(aluguel.getPagamentosAluguelList());
+		return aluguel;
 	}
 	
 	public Aluguel salvar(Aluguel aluguel) {
+		aluguel.setDtHrAluguel(new Date());
 		return getAluguelDAO().update(aluguel);
 	}
 	

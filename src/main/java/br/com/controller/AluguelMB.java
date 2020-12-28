@@ -17,6 +17,7 @@ import br.com.model.Aluguel;
 import br.com.model.Aluguel.StatusAluguel;
 import br.com.model.Casa;
 import br.com.model.Inquilino;
+import br.com.model.PagamentoAluguel;
 import br.com.model.Util;
 import br.com.model.resultset.AluguelRS;
 
@@ -37,6 +38,7 @@ public class AluguelMB extends MainMB implements Serializable {
 	private Inquilino inquilinoSelecionado;
 	private List<Casa> casaList;
 	private Casa casaSelecionada;
+	private PagamentoAluguel pagamentoAluguel;
 	//FILTROS
 	private Long filtroCodigo;
 	private String filtroCpf, filtroNome, filtroBairro, filtroRua, filtroPessoa, filtroTipoPesquisaPessoa,
@@ -67,7 +69,9 @@ public class AluguelMB extends MainMB implements Serializable {
 				} else if (Acao.editar.equals(acaoAtual)) {
 					subTitulo = "Editar Inquilino";
 					labelBtSalvar = "Salvar Alterações";
-				} 
+				} else if (Acao.pagar.equals(acaoAtual)) {
+					subTitulo = "Realizar Pagamento";
+				}
 				if (aluguel == null) {
 					if (aluguelSelecionadoRS != null) {
 						aluguel = aluguelBean.pegar(aluguelSelecionadoRS.getNumSequencial());
@@ -96,6 +100,15 @@ public class AluguelMB extends MainMB implements Serializable {
 		if (Util.validaListDefault(aluguelRSList)) {
 			aluguelRSList.clear();
 		}
+	}
+	
+	public void abrirPopupAdicionarPagamento () {
+		pagamentoAluguel = new PagamentoAluguel();
+		RequestContext.getCurrentInstance().execute("PF('addPagamento').show();");
+	}
+	
+	public void acaoSalvarPagementoAluguel () {
+		
 	}
 	
 	public void acaoSalvar () {
@@ -195,6 +208,10 @@ public class AluguelMB extends MainMB implements Serializable {
 		render(Acao.editar);
 	}
 	
+	public void navPagar() {
+		render(Acao.pagar);
+	}
+	
 	public List<StatusAluguel> getStatusAluguelList() {
 		List<StatusAluguel> listaStatus = new ArrayList<>();
 		for(StatusAluguel itemStatus: StatusAluguel.values()) {
@@ -218,6 +235,10 @@ public class AluguelMB extends MainMB implements Serializable {
 	
 	public boolean isAlugando() {
 		return Acao.alugar.equals(acaoAtual);
+	}
+	
+	public boolean isPagando() {  
+		return Acao.pagar.equals(acaoAtual); 
 	}
 	
 	public Long getFiltroCodigo() {
@@ -400,7 +421,8 @@ public class AluguelMB extends MainMB implements Serializable {
 		alugar,
 		pesquisar, 
 		visualizar, 
-		editar;
+		editar,
+		pagar;
 	}
 
 }
