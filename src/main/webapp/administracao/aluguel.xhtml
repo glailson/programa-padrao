@@ -132,15 +132,15 @@
 					<h:outputText value="${item.vencimento}" /> 
 				</p:column>
 				<p:column headerText="Ações" styleClass="centralizarTexto" style="width: 100px;">
-					<p:commandLink action="#{aluguelMB.navVisualizar()}" update="mainContent" styleClass="fa fa-lg fa-green fa-search-plus">
+					<p:commandLink action="#{aluguelMB.navVisualizar()}" update="mainContent" styleClass="fa fa-lg fa-green fa-search-plus" process="@this">
 						<h:graphicImage library="aluguefacil" name="/imagens/iconPesquisar.png" alt="Visualizar" title="Visualizar" /> 
 						<f:setPropertyActionListener value="#{item}" target="#{aluguelMB.aluguelSelecionadoRS}"/>
 					</p:commandLink>
-					<p:commandLink style="padding-left: 5px;" action="#{aluguelMB.navEditar()}" update="mainContent" styleClass="fa fa-lg fa-green fa-search-plus"> 
+					<p:commandLink style="padding-left: 5px;" action="#{aluguelMB.navEditar()}" update="mainContent" styleClass="fa fa-lg fa-green fa-search-plus" process="@this"> 
 						<h:graphicImage library="aluguefacil" name="/imagens/iconEditar.png" alt="Editar" title="Editar" />
 						<f:setPropertyActionListener value="#{item}" target="#{aluguelMB.aluguelSelecionadoRS}"/>
 					</p:commandLink>
-					<p:commandLink style="padding-left: 5px;" action="#{aluguelMB.navPagar()}" update="mainContent" styleClass="fa fa-lg fa-green fa-search-plus"> 
+					<p:commandLink style="padding-left: 5px;" action="#{aluguelMB.navPagar()}" update="mainContent" styleClass="fa fa-lg fa-green fa-search-plus" process="@this"> 
 						<h:graphicImage library="aluguefacil" name="/imagens/iconSelect.png" alt="Pagar" title="Pagar" />
 						<f:setPropertyActionListener value="#{item}" target="#{aluguelMB.aluguelSelecionadoRS}"/>
 					</p:commandLink>
@@ -226,20 +226,24 @@
 			
 			<h3>Pagamentos</h3>
 			<p:dataTable style="width: 800px;"  id="resultadoPagamento" var="item" rows="5"
-				value="#{aluguelMB.aluguel.pagamentosAluguelList}" emptyMessage="Nenhum registro encontrado" paginator="true" rowIndexVar="linha"
+				value="#{aluguelMB.pagamentoAluguelList}" emptyMessage="Nenhum registro encontrado" paginator="true" rowIndexVar="linha"
 				paginatorPosition="bottom" 
 				paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 				currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords}">
-				<p:column headerText="Recebedor" style="width: 200px;">
+				<p:column headerText="Recebedor" style="width: 200px;" styleClass="centralizarTexto">
 					<h:outputText value="#{item.recebedor}" />
 				</p:column>
-				<p:column headerText="Mês Referência" style="width: 100px;">
-					<h:outputText value="#{item.dtHrReferenciaPagamento}" />
+				<p:column headerText="Mês Referência" style="width: 100px;" styleClass="centralizarTexto" >
+					<h:outputText value="#{item.dtHrReferenciaPagamento}" >
+						<f:convertDateTime pattern="MM/yyyy" />
+					</h:outputText>
 				</p:column>
-				<p:column headerText="Data" style="width: 100px;">
-					<h:outputText value="#{item.dtHrPagamento}" />
+				<p:column headerText="Data" style="width: 100px;" styleClass="centralizarTexto">
+					<h:outputText value="#{item.dtHrPagamento}" >
+						<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+					</h:outputText>
 				</p:column>
-				<p:column headerText="Situação" style="width: 100px;">                                                                                                  
+				<p:column headerText="Situação" style="width: 100px;" styleClass="centralizarTexto">                                                                                                  
 					<h:outputText value="Pago" />
 				</p:column>
 			</p:dataTable>
@@ -259,7 +263,7 @@
 				</p:commandButton>
 				
 				<p:commandButton  value="Realizar Pagamento" style="margin-top: 5px; border-top: 1px solid #d3d3d3; clear: both; width: 210px;"
-					 process="@this" action="#{aluguelMB.abrirPopupAdicionarPagamento()}" rendered="#{aluguelMB.pagando}"> 
+					 process="@this" action="#{aluguelMB.abrirPopupAdicionarPagamento()}" rendered="#{aluguelMB.pagando}" update="popupAddPagamento"> 
 				</p:commandButton>
 				
 				<p:commandButton value="${aluguelMB.labelBtSalvar}" style="margin-top: 5px; border-top: 1px solid #d3d3d3; clear: both; width: 190px;"
@@ -371,35 +375,35 @@
 			</p:outputPanel>
 		</p:dialog>
 		
-		<p:dialog header="Realizar Pagamento" widgetVar="addPagamento" modal="true" resizable="false" closable="true" width="500" height="200" >
+		<p:dialog header="Realizar Pagamento" widgetVar="addPagamento" modal="true" resizable="false" closable="true" width="500" height="135" >
 			<p:outputPanel id="popupAddPagamento" >
 				<p:messages id="msgAddPagamento" autoUpdate="false" showIcon="false" closable="true" showSummary="false" showDetail="true" />
-				<h5>Mês Referência</h5>
-				<hr />
 				<div class="ui-fluid" >
 					<h:panelGrid columns="3" cellpadding="5">
 						<p:row>
 							<p:column>
-								<p:outputLabel for="dataReferencia" value="Data Referência" />
-						        <p:calendar id="dataReferencia" value="#{aluguelMB.filtroDataInicial}" 
+								<p:outputLabel for="idDataReferencia" value="Data Referência"/>
+						        <p:calendar id="idDataReferencia" value="#{aluguelMB.dataReferencia}" 
 						        	pattern="dd/MM/yyyy" locale="pt" showButtonPanel="true" 
-						        	navigator="true"/>
+						        	navigator="true" required="true" requiredMessage="Campo 'Data Referência' obrigatória."/>
 						    </p:column>
 						 </p:row>
 						<p:row>
 							<p:column>
-								<p:outputLabel value="Recebedor" />
-								<p:inputText id="idCodigoRecebedor" value="#{aluguelMB.filtroRua}" maxlength="50"/>
+								<p:outputLabel value="Recebedor" for="idCodigoRecebedor"/>
+								<p:password id="idCodigoRecebedor" value="#{aluguelMB.recebedor}"  required="true" requiredMessage="Campo 'Recebedor' obrigatório."
+									maxlength="8"/>
 							</p:column>
 						</p:row>
 					</h:panelGrid>
 				</div>
 				<hr />
 				<p:outputPanel styleClass="painelBotoes"> 
-					<p:commandButton value="Limpar" action="#{aluguelMB.acaoLimparPesquisaInquilino()}"  process="@this"/>
+					<p:commandButton value="Limpar" action="#{aluguelMB.acaoLimparPesquisaInquilino()}"  process="@this" update="popupAddPagamento"/>
 					<p:commandButton value="Cancelar" type="button" onclick="PF('addPagamento').hide();" />
-					<p:commandButton value="Pagar" process="@this" style="float: right;" update="msgAddPagamento">
-						<p:confirm header="Confirmação de Pagamento" message="Confirmar pagamento?"/>
+					<p:commandButton value="Pagar" process="@this idCodigoRecebedor idDataReferencia" style="float: right;"  action="#{aluguelMB.acaoSalvarPagementoAluguel()}" onclick="PF('addPagamento').hide();"
+						update="resultadoPagamento">
+						
 					</p:commandButton>
 				</p:outputPanel>
 			</p:outputPanel>

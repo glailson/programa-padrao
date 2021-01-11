@@ -13,6 +13,7 @@ import javax.faces.bean.ViewScoped;
 import org.primefaces.context.RequestContext;
 
 import br.com.ejb.AluguelBean;
+import br.com.ejb.PagamentoAluguelBean;
 import br.com.model.Aluguel;
 import br.com.model.Aluguel.StatusAluguel;
 import br.com.model.Casa;
@@ -28,21 +29,25 @@ public class AluguelMB extends MainMB implements Serializable {
 	
 	@EJB
 	AluguelBean aluguelBean;
+	@EJB
+	PagamentoAluguelBean pagamentoAluguelBean;
 	// CONTROLE DE TELA
 	private Acao acaoAtual;
 	private Aluguel aluguel;
 	private AluguelRS aluguelSelecionadoRS;
 	private List<AluguelRS> aluguelRSList;
-	private String subTitulo, labelBtSalvar;
+	private String subTitulo, labelBtSalvar, recebedor;
 	private List<Inquilino> inquilinoList;
 	private Inquilino inquilinoSelecionado;
 	private List<Casa> casaList;
 	private Casa casaSelecionada;
 	private PagamentoAluguel pagamentoAluguel;
+	private Date dataReferencia;
+	private List<PagamentoAluguel> pagamentoAluguelList;
 	//FILTROS
 	private Long filtroCodigo;
 	private String filtroCpf, filtroNome, filtroBairro, filtroRua, filtroPessoa, filtroTipoPesquisaPessoa,
-	filtroBairroPopup, filtroRuaPopup;
+		filtroBairroPopup, filtroRuaPopup;
 	private StatusAluguel filtroStatus;
 	private Integer filtroVencimento, filtroNumeroPopup;
 	private Date filtroDataInicial,filtroDataFinal;
@@ -77,6 +82,7 @@ public class AluguelMB extends MainMB implements Serializable {
 						aluguel = aluguelBean.pegar(aluguelSelecionadoRS.getNumSequencial());
 					}
 				}
+				pagamentoAluguelList = pagamentoAluguelBean.pesquisarPagamentos();
 			}
 		}
 	}
@@ -103,12 +109,28 @@ public class AluguelMB extends MainMB implements Serializable {
 	}
 	
 	public void abrirPopupAdicionarPagamento () {
+		dataReferencia = null;
+		recebedor = null;
 		pagamentoAluguel = new PagamentoAluguel();
 		RequestContext.getCurrentInstance().execute("PF('addPagamento').show();");
 	}
 	
 	public void acaoSalvarPagementoAluguel () {
-		
+		if (recebedor.equals("Teste$01")) {
+			pagamentoAluguel = new PagamentoAluguel();
+			pagamentoAluguel.setAluguel(aluguel);
+			pagamentoAluguel.setDtHrPagamento(new Date());
+			pagamentoAluguel.setDtHrReferenciaPagamento(dataReferencia);
+			pagamentoAluguel.setRecebedor(recebedor);
+			pagamentoAluguel = pagamentoAluguelBean.salvar(pagamentoAluguel);
+			pagamentoAluguelList = pagamentoAluguelBean.pesquisarPagamentos();
+			addInfoMessage("Pagamento realizado com sucesso.");
+		} else {
+			dataReferencia = null;
+			recebedor = null;			
+			addErroMessage("Usuário inválido. Pagamento não realizado.");
+			RequestContext.getCurrentInstance().execute("PF('addPagamento').show();");
+		}
 	}
 	
 	public void acaoSalvar () {
@@ -415,6 +437,30 @@ public class AluguelMB extends MainMB implements Serializable {
 
 	public void setFiltroNumeroPopup(Integer filtroNumeroPopup) {
 		this.filtroNumeroPopup = filtroNumeroPopup;
+	}
+
+	public String getRecebedor() {
+		return recebedor;
+	}
+
+	public void setRecebedor(String recebedor) {
+		this.recebedor = recebedor;
+	}
+
+	public Date getDataReferencia() {
+		return dataReferencia;
+	}
+
+	public void setDataReferencia(Date dataReferencia) {
+		this.dataReferencia = dataReferencia;
+	}
+
+	public List<PagamentoAluguel> getPagamentoAluguelList() {
+		return pagamentoAluguelList;
+	}
+
+	public void setPagamentoAluguelList(List<PagamentoAluguel> pagamentoAluguelList) {
+		this.pagamentoAluguelList = pagamentoAluguelList;
 	}
 
 	private static enum Acao {
