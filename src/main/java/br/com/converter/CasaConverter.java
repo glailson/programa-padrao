@@ -15,6 +15,7 @@ public class CasaConverter implements Converter, Serializable {
 	  
 	private static final long serialVersionUID = -3304040463661270514L;
 
+	@Override
 	public Object getAsObject(FacesContext ctx, UIComponent component, String value) {  
         if (value != null) {  
             return this.getAttributesFrom(component).get(value);  
@@ -22,7 +23,8 @@ public class CasaConverter implements Converter, Serializable {
         return null;  
     }  
   
-    public String getAsString(FacesContext ctx, UIComponent component, Object value) {  
+    @Override
+	public String getAsString(FacesContext ctx, UIComponent component, Object value) {  
   
         if (value != null && !"".equals(value)) {  
   

@@ -58,10 +58,12 @@ public class Aluguel implements GenericEntity<Long> {
 		// TODO Auto-generated constructor stub
 	}
 
+	@Override
 	public Long getNumSequencial() {
 		return numSequencial;
 	}
 
+	@Override
 	public void setNumSequencial(Long numSequencial) {
 		this.numSequencial = numSequencial;
 	}

@@ -61,10 +61,12 @@ public class Inquilino implements GenericEntity<Long> {
 		this.cpf = cpf;
 	}
 
+	@Override
 	public Long getNumSequencial() {
 		return numSequencial;
 	}
 
+	@Override
 	public void setNumSequencial(Long numSequencial) {
 		this.numSequencial = numSequencial;
 	}

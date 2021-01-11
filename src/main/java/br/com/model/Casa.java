@@ -57,10 +57,12 @@ public class Casa implements GenericEntity<Long> {
 		this.numero = numero;
 	}
 
+	@Override
 	public Long getNumSequencial() {
 		return numSequencial;
 	}
 
+	@Override
 	public void setNumSequencial(Long numSequencial) {
 		this.numSequencial = numSequencial;
 	}

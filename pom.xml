@@ -5,10 +5,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>br.com.teste</groupId>
-    <artifactId>prova</artifactId>
+    <artifactId>projeto-padrao</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>war</packaging>
-    <name>WildFly Quickstarts: prova</name>
+    <name>WildFly Quickstarts: projeto-padrao</name>
     <description>A starter Java EE 7 webapp project for use on JBoss WildFly / WildFly, generated from the jboss-javaee6-webapp archetype</description>
 
 
@@ -26,7 +26,7 @@
             tested stacks. -->
         <version.jboss.bom>8.2.1.Final</version.jboss.bom>
 
-        <!-- other plugin versions -->
+        <!-- other plugin versions --> 
         <version.compiler.plugin>3.1</version.compiler.plugin>
         <version.surefire.plugin>2.16</version.surefire.plugin>
         <version.war.plugin>2.5</version.war.plugin>
@@ -56,16 +56,17 @@
                 <scope>import</scope>
             </dependency>
             
+			<!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-core -->
 			<dependency>
 			    <groupId>org.hibernate</groupId>
 			    <artifactId>hibernate-core</artifactId>
 			    <version>5.4.17.Final</version>
 			</dependency>
 			
-			<dependency>
+			<dependency> 
 			    <groupId>org.hibernate</groupId>
 			    <artifactId>hibernate-entitymanager</artifactId>
-			    <version>5.4.17.Final</version>
+			    <version>5.4.17.Final</version> 
 			</dependency>
 			
         </dependencies>

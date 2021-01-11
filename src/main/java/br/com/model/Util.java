@@ -142,7 +142,7 @@ public class Util {
     		sm = 0; 
     		peso = 2; 
 			for (i=11; i>=0; i--) { 
-				num = (int)(cnpj.charAt(i) - 48); 
+				num = cnpj.charAt(i) - 48; 
 				sm = sm + (num * peso);
 				peso = peso + 1; 
 				if (peso == 10) 
@@ -154,7 +154,7 @@ public class Util {
   			else dig13 = (char)((11-r) + 48); 
 			sm = 0; peso = 2;
 			for (i=12; i>=0; i--) { 
-				num = (int)(cnpj.charAt(i)- 48); 
+				num = cnpj.charAt(i)- 48; 
 				sm = sm + (num * peso); 
 				peso = peso + 1; 
 				if (peso == 10)

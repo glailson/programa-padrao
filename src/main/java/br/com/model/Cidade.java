@@ -43,10 +43,12 @@ public class Cidade implements GenericEntity<Long> {
 		this.numSequencial = numSequencial;
 	}
 
+	@Override
 	public Long getNumSequencial() {
 		return numSequencial;
 	}
 
+	@Override
 	public void setNumSequencial(Long numSequencial) {
 		this.numSequencial = numSequencial;
 	}

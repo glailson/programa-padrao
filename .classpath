@@ -35,7 +35,7 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/glailson.leoncio/Downloads/hibernate-core-5.1.0.Final-sources.jar"/>
-	<classpathentry kind="lib" path="C:/Users/glailson.leoncio/.m2/repository/org/hibernate/hibernate-core/5.4.17.Final/hibernate-core-5.4.17.Final.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Glailson Leoncio/.m2/repository/org/hibernate/hibernate-core/5.4.17.Final/hibernate-core-5.4.17.Final.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Glailson Leoncio/Downloads/hibernate-core-5.1.0.Final-sources.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

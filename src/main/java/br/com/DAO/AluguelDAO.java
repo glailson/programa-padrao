@@ -176,7 +176,7 @@ public class AluguelDAO extends GenericDAO<Aluguel> {
 		criteria.orderBy(builder.desc(root.get(Aluguel_.numSequencial)));
 		criteria.where(and.toArray(new Predicate[and.size()]));
 		try{
-			return (Long) getEntityManager().createQuery(criteria).setMaxResults(1).getSingleResult();
+			return getEntityManager().createQuery(criteria).setMaxResults(1).getSingleResult();
 		}catch(NoResultException nre){
 			return null;
 		}

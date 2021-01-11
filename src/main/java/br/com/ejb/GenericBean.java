@@ -10,7 +10,7 @@ import javax.persistence.PersistenceContext;
 import br.com.model.GenericEntity;
 
 @Stateless
-@LocalBean
+@LocalBean 
 public abstract class GenericBean<T extends GenericEntity<Long>> {
 	
 	@PersistenceContext(unitName = "ProjetoPU")
