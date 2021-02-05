@@ -8,7 +8,7 @@ CREATE SCHEMA aluguefacil
   cabairro varchar(100),
   cacidade varchar(100),
   caobservacao varchar(255),
-  carsituacao varchar(30)
+  carsituacao varchar(30),
   canumero integer ,
   cadthrcadastro timestamp without time zone,
   CONSTRAINT tbcasa_pkey PRIMARY KEY (canumsequencial)

@@ -22,7 +22,6 @@ public class CasaMB extends MainMB implements Serializable {
 	
 	@EJB
 	CasaBean casaBean;
-	
 	// CONTROLE DE TELA
 	private Acao acaoAtual;
 	private Casa casa;
