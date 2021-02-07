@@ -116,12 +116,18 @@ public class AluguelMB extends MainMB implements Serializable {
 	}
 	
 	public void acaoSalvarPagementoAluguel () {
+		boolean valido = false;
+		String nomeRecebedor = null;
 		if (recebedor.equals("Teste$01")) {
+			valido = true;
+			nomeRecebedor = "Glailson Leoncio";
+		}
+		if (valido) {
 			pagamentoAluguel = new PagamentoAluguel();
 			pagamentoAluguel.setAluguel(aluguel);
 			pagamentoAluguel.setDtHrPagamento(new Date());
 			pagamentoAluguel.setDtHrReferenciaPagamento(dataReferencia);
-			pagamentoAluguel.setRecebedor(recebedor);
+			pagamentoAluguel.setRecebedor(nomeRecebedor);
 			pagamentoAluguel = pagamentoAluguelBean.salvar(pagamentoAluguel);
 			pagamentoAluguelList = pagamentoAluguelBean.pesquisarPagamentos();
 			addInfoMessage("Pagamento realizado com sucesso.");

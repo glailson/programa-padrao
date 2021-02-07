@@ -7,13 +7,18 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:h="http://java.sun.com/jsf/html"
       >
-
-    <h:head>
+	<style>
+		.centralizarTexto {
+			text-align: center;
+		}
+	</style>
+	
+	<h:head>
     	
     </h:head>
 
-    <h:body>
-		<div id="page" style="background-color: #B0E0E6;">
+    <h:body style="background-color: #B0E0E6;">
+		<div id="page" >
 		    <div id="header" style="width: 960px; margin-left: 23%;">
 				  <p:menubar>
 			        <p:submenu label="Administração" icon="pi pi-file">
@@ -39,14 +44,6 @@
 				   	</ui:insert>
 			    </div>
 		    </h:form>
-	
-		    <div id="footer" style="width: 960px; margin-left: 23%;height: 300px;">
-<!-- 		    		<p:outputLabel >Desenvolvido por Glailson Leoncio</p:outputLabel> -->
-		    	<ui:insert name="footer" >
-<!-- 		    	  <ui:include src="/template/basicfooter.xhtml" /> -->
-		    	</ui:insert>
-	   	    </div>
-	
 	      </div>
 
     </h:body>
