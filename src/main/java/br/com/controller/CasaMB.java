@@ -12,7 +12,7 @@ import javax.faces.bean.ViewScoped;
 import br.com.ejb.CasaBean;
 import br.com.model.Casa;
 import br.com.model.Casa.StatusCasa;
-import br.com.model.Util;
+import br.com.model.AlugueFacilUtil;
 import br.com.model.resultset.CasaRS;
 
 @ManagedBean
@@ -82,7 +82,7 @@ public class CasaMB extends MainMB implements Serializable {
 		filtroBairro = null;
 		filtroRua = null;
 		casaSelecionadaRs = null;
-		if (Util.validaListDefault(casaRsList)) {
+		if (AlugueFacilUtil.validaListDefault(casaRsList)) {
 			casaRsList.clear();
 		}
 	}

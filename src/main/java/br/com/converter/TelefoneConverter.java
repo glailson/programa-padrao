@@ -5,7 +5,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 
-import br.com.model.Util;
+import br.com.model.AlugueFacilUtil;
 
 @FacesConverter("TelefoneConverter")
 public class TelefoneConverter implements Converter {
@@ -20,7 +20,7 @@ public class TelefoneConverter implements Converter {
     	if(value == null){  
             return "";  
         } 
-        return Util.formataTelefone(value.toString());
+        return AlugueFacilUtil.formataTelefone(value.toString());
     }
 
 }

@@ -5,7 +5,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import br.com.DAO.InquilinoDAO;
 import br.com.model.Inquilino;
-import br.com.model.Util;
+import br.com.model.AlugueFacilUtil;
 import br.com.model.resultset.InquilinoRS;
 
 @Stateless
@@ -33,9 +33,9 @@ public class InquilinoBean extends GenericBean<Inquilino> {
 		inquilino.setNomeFiador(inquilino.getNomeFiador().toUpperCase());
 		inquilino.setNomeGuerra(inquilino.getNomeGuerra().toUpperCase());
 		inquilino.setProfissao(inquilino.getProfissao().toUpperCase());
-		inquilino.setCpf(Util.removeMascaraGeral(inquilino.getCpf()));
-		inquilino.setTelefone(Util.removeMascaraGeral(inquilino.getTelefone()));
-		inquilino.setTelefoneFiador(Util.removeMascaraGeral(inquilino.getTelefoneFiador()));
+		inquilino.setCpf(AlugueFacilUtil.removeMascaraGeral(inquilino.getCpf()));
+		inquilino.setTelefone(AlugueFacilUtil.removeMascaraGeral(inquilino.getTelefone()));
+		inquilino.setTelefoneFiador(AlugueFacilUtil.removeMascaraGeral(inquilino.getTelefoneFiador()));
 		return getInquilinoDAO().update(inquilino);
 	}
 

@@ -20,7 +20,7 @@ import br.com.model.Casa_;
 import br.com.model.Inquilino;
 import br.com.model.Inquilino_;
 import br.com.model.PagamentoAluguel;
-import br.com.model.Util;
+import br.com.model.AlugueFacilUtil;
 import br.com.model.resultset.AluguelRS;
 
 public class AluguelDAO extends GenericDAO<Aluguel> {
@@ -41,23 +41,23 @@ public class AluguelDAO extends GenericDAO<Aluguel> {
 		
 		List<Predicate> and = new ArrayList();
 		{	
-			if (Util.validaStringDefault(filtroCpf)) {
+			if (AlugueFacilUtil.validaStringDefault(filtroCpf)) {
 				and.add(builder.equal(aluInqJoin.get(Inquilino_.cpf), filtroCpf));
 			} else if (filtroCodigo != null && filtroCodigo != 0) {
 				and.add(builder.equal(root.get(Aluguel_.numSequencial), filtroCodigo));
 			} else {
-				if (Util.validaStringDefault(filtroNome)) {
+				if (AlugueFacilUtil.validaStringDefault(filtroNome)) {
 					and.add(builder.like(builder.upper(aluInqJoin.get(Inquilino_.nome)), "%" + filtroNome.toUpperCase() + "%"));
 				}
 				if (filtroStatus != null) {
 					and.add(builder.equal(root.get(Aluguel_.status), filtroStatus));
 				}
 				
-				if (Util.validaStringDefault(filtroBairro)) {
+				if (AlugueFacilUtil.validaStringDefault(filtroBairro)) {
 					and.add(builder.like(builder.upper(aluInqJoin.get(Inquilino_.nome)), "%" + filtroBairro.toUpperCase() + "%"));
 				}
 				
-				if (Util.validaStringDefault(filtroRua)) {
+				if (AlugueFacilUtil.validaStringDefault(filtroRua)) {
 					and.add(builder.like(builder.upper(aluInqJoin.get(Inquilino_.nome)), "%" + filtroRua.toUpperCase() + "%"));
 				}
 //				if(filtroDataInicial != null){
@@ -98,10 +98,10 @@ public class AluguelDAO extends GenericDAO<Aluguel> {
 		
 		List<Predicate> and = new ArrayList();
 		{	
-			if (Util.validaStringDefault(filtroNome)) {
+			if (AlugueFacilUtil.validaStringDefault(filtroNome)) {
 				and.add(builder.equal(root.get(Inquilino_.cpf), filtroCpf));
 			} 
-			if (Util.validaStringDefault(filtroCpf)) {
+			if (AlugueFacilUtil.validaStringDefault(filtroCpf)) {
 				and.add(builder.like(builder.upper(root.get(Inquilino_.nome)), "%" + filtroNome.toUpperCase() + "%"));
 			}
 		}
@@ -130,10 +130,10 @@ public class AluguelDAO extends GenericDAO<Aluguel> {
 		
 		List<Predicate> and = new ArrayList();
 		{	
-			if (Util.validaStringDefault(filtroBairro)) {
+			if (AlugueFacilUtil.validaStringDefault(filtroBairro)) {
 				and.add(builder.like(builder.upper(root.get(Casa_.bairro)), "%" + filtroBairro.toUpperCase() + "%"));
 			} 
-			if (Util.validaStringDefault(filtroRua)) {
+			if (AlugueFacilUtil.validaStringDefault(filtroRua)) {
 				and.add(builder.like(builder.upper(root.get(Casa_.rua)), "%" + filtroRua.toUpperCase() + "%"));
 			}
 			if (filtroNumero != null) {

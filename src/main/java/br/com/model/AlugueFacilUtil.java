@@ -4,7 +4,7 @@ import java.util.Date;
 import java.util.InputMismatchException;
 import java.util.List;
 
-public class Util {
+public class AlugueFacilUtil {
 	
 	public static boolean validaStringDefault(String texto){
 		return texto != null && !texto.trim().isEmpty();
@@ -120,6 +120,25 @@ public class Util {
 		return retorno;
 	}
 	
+	static public String formataCpf(String cpf) {
+		cpf = cpf.trim();
+		StringBuffer temp = new StringBuffer();
+		if (cpf.length() == 11) {
+			temp.append(cpf.substring(0, 3));
+			temp.append(".");
+			temp.append(cpf.substring(3, 6));
+			temp.append(".");
+			temp.append(cpf.substring(6, 9));
+			temp.append("-");
+			temp.append(cpf.substring(9, 11));
+			
+		} else {
+			temp.append(cpf);
+		}
+		String retorno = temp.toString();
+		return retorno;
+	}
+	
 	  //validar CNPJ
     public static boolean validaCNPJ(String cnpj) { 
     	cnpj = removeMascaraGeral(cnpj);
@@ -182,7 +201,12 @@ public class Util {
 			temp.append(telefone.substring(0, 2));
 			temp.append(") ");
 		}
-		if (telefone.length() > 8) {
+		if (telefone.length() >= 10) {
+			temp.append(telefone.substring(2, 7));
+			temp.append("-");
+			temp.append(telefone.substring(7, 10));
+		}
+		if (telefone.length() == 8) {
 			temp.append(telefone.substring(2, 6));
 			temp.append("-");
 			temp.append(telefone.substring(6, 10));

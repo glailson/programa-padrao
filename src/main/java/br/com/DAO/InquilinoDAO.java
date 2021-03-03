@@ -10,7 +10,7 @@ import javax.persistence.criteria.Root;
 import br.com.ejb.GenericDAO;
 import br.com.model.Inquilino;
 import br.com.model.Inquilino_;
-import br.com.model.Util;
+import br.com.model.AlugueFacilUtil;
 import br.com.model.resultset.InquilinoRS;
 
 public class InquilinoDAO extends GenericDAO<Inquilino> {
@@ -29,10 +29,10 @@ public class InquilinoDAO extends GenericDAO<Inquilino> {
 			if(filtroCodigo != null && filtroCodigo != 0){
 				and.add(builder.equal(root.get(Inquilino_.numSequencial), filtroCodigo));
 			}
-			if (Util.validaStringDefault(filtroNome)) {
+			if (AlugueFacilUtil.validaStringDefault(filtroNome)) {
 				and.add(builder.like(builder.upper(root.get(Inquilino_.nome)), "%" + filtroNome.toUpperCase() + "%"));
 			}
-			if (Util.validaStringDefault(filtroCpf)) {
+			if (AlugueFacilUtil.validaStringDefault(filtroCpf)) {
 				and.add(builder.like(builder.upper(root.get(Inquilino_.cpf)), "%" + filtroNome.toUpperCase() + "%"));
 			}
 		}

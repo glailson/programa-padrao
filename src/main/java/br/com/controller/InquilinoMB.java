@@ -10,7 +10,7 @@ import javax.faces.bean.ViewScoped;
 
 import br.com.ejb.InquilinoBean;
 import br.com.model.Inquilino;
-import br.com.model.Util;
+import br.com.model.AlugueFacilUtil;
 import br.com.model.resultset.InquilinoRS;
 
 @ManagedBean
@@ -61,8 +61,8 @@ public class InquilinoMB extends MainMB implements Serializable {
 	}
 	
 	public void acaoPesquisar () {
-		if (Util.validaStringDefault(filtroCpf)) {
-			filtroCpf = Util.removeMascaraGeral(filtroCpf);
+		if (AlugueFacilUtil.validaStringDefault(filtroCpf)) {
+			filtroCpf = AlugueFacilUtil.removeMascaraGeral(filtroCpf);
 		}
 		inquilinoRSList = inquilinoBean.pesquisarRs(filtroCodigo, filtroNome, filtroCpf);
 	}
@@ -72,7 +72,7 @@ public class InquilinoMB extends MainMB implements Serializable {
 		filtroNome = null;
 		filtroCpf = null;
 		inquilinoSelecionadoRS = null;
-		if (Util.validaListDefault(inquilinoRSList)) {
+		if (AlugueFacilUtil.validaListDefault(inquilinoRSList)) {
 			inquilinoRSList.clear();
 		}
 	}

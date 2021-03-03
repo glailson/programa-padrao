@@ -5,15 +5,15 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 
-import br.com.model.Util;
+import br.com.model.AlugueFacilUtil;
 
-@FacesConverter("CpfCnpjConverter")
-public class CpfCnpjConverter implements Converter {
+@FacesConverter("CpfConverter")
+public class CpfConverter implements Converter {
 
     @Override
     public Object getAsObject(FacesContext ctx, UIComponent component, String value) {
     	if(value != null){  
-            return Util.removeMascaraGeral(value);  
+            return AlugueFacilUtil.removeMascaraGeral(value);  
         } 
     	return value;
     }
@@ -23,7 +23,7 @@ public class CpfCnpjConverter implements Converter {
     	if(value == null){  
             return "";  
         } 
-        return Util.formataCpfCnpj(value.toString());
+        return AlugueFacilUtil.formataCpf(value.toString());
     }
 
 }

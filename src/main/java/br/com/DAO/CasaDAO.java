@@ -12,7 +12,7 @@ import javax.persistence.criteria.Root;
 import br.com.ejb.GenericDAO;
 import br.com.model.Casa;
 import br.com.model.Casa_;
-import br.com.model.Util;
+import br.com.model.AlugueFacilUtil;
 import br.com.model.resultset.CasaRS;
 
 public class CasaDAO extends GenericDAO<Casa> {
@@ -31,13 +31,13 @@ public class CasaDAO extends GenericDAO<Casa> {
 			if(filtroCodigo != null && filtroCodigo != 0){
 				and.add(builder.equal(root.get(Casa_.numSequencial), filtroCodigo));
 			}
-			if (Util.validaStringDefault(filtroCidade)) {
+			if (AlugueFacilUtil.validaStringDefault(filtroCidade)) {
 				and.add(builder.like(builder.upper(root.get(Casa_.cidade)), "%" + filtroCidade.toUpperCase() + "%"));
 			}
-			if (Util.validaStringDefault(filtroBairro)) {
+			if (AlugueFacilUtil.validaStringDefault(filtroBairro)) {
 				and.add(builder.like(builder.upper(root.get(Casa_.bairro)), "%" + filtroBairro.toUpperCase() + "%"));
 			}
-			if (Util.validaStringDefault(filtroRua)) {
+			if (AlugueFacilUtil.validaStringDefault(filtroRua)) {
 				and.add(builder.like(builder.upper(root.get(Casa_.rua)), "%" + filtroRua.toUpperCase() + "%"));
 			}
 		}
@@ -61,13 +61,13 @@ public class CasaDAO extends GenericDAO<Casa> {
 			if(filtroCodigo != null && filtroCodigo != 0){
 				and.add(builder.equal(root.get(Casa_.numSequencial), filtroCodigo));
 			}
-			if (Util.validaStringDefault(filtroCidade)) {
+			if (AlugueFacilUtil.validaStringDefault(filtroCidade)) {
 				and.add(builder.like(builder.upper(root.get(Casa_.cidade)), "%" + filtroCidade.toUpperCase() + "%"));
 			}
-			if (Util.validaStringDefault(filtroBairro)) {
+			if (AlugueFacilUtil.validaStringDefault(filtroBairro)) {
 				and.add(builder.like(builder.upper(root.get(Casa_.bairro)), "%" + filtroBairro.toUpperCase() + "%"));
 			}
-			if (Util.validaStringDefault(filtroRua)) {
+			if (AlugueFacilUtil.validaStringDefault(filtroRua)) {
 				and.add(builder.like(builder.upper(root.get(Casa_.rua)), "%" + filtroRua.toUpperCase() + "%"));
 			}
 		}

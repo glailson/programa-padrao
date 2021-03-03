@@ -19,7 +19,7 @@ import br.com.model.Aluguel.StatusAluguel;
 import br.com.model.Casa;
 import br.com.model.Inquilino;
 import br.com.model.PagamentoAluguel;
-import br.com.model.Util;
+import br.com.model.AlugueFacilUtil;
 import br.com.model.resultset.AluguelRS;
 
 @ManagedBean
@@ -60,6 +60,7 @@ public class AluguelMB extends MainMB implements Serializable {
 	private void render(Acao novaAcao) {
 		acaoAtual = novaAcao;
 		filtroTipoPesquisaPessoa = "CPF";
+		pagamentoAluguelList =  new ArrayList<PagamentoAluguel>();
 		if (Acao.pesquisar.equals(acaoAtual)) {
 			subTitulo = "Pesquisar Aluguel";
 		} else {
@@ -88,8 +89,8 @@ public class AluguelMB extends MainMB implements Serializable {
 	}
 	
 	public void acaoPesquisar () {
-		if (Util.validaStringDefault(filtroCpf)) {
-			filtroCpf = Util.removeMascaraGeral(filtroCpf);
+		if (AlugueFacilUtil.validaStringDefault(filtroCpf)) {
+			filtroCpf = AlugueFacilUtil.removeMascaraGeral(filtroCpf);
 		}
 		aluguelRSList = aluguelBean.pesquisarRs(filtroCodigo, filtroNome, filtroCpf, filtroStatus, 
 			filtroBairro, filtroRua, filtroDataInicial,filtroDataFinal);
@@ -103,7 +104,7 @@ public class AluguelMB extends MainMB implements Serializable {
 		filtroBairro = null;
 		filtroRua = null;
 		aluguelSelecionadoRS = null;
-		if (Util.validaListDefault(aluguelRSList)) {
+		if (AlugueFacilUtil.validaListDefault(aluguelRSList)) {
 			aluguelRSList.clear();
 		}
 	}
@@ -165,7 +166,7 @@ public class AluguelMB extends MainMB implements Serializable {
 		if(filtroTipoPesquisaPessoa.equals("NOME")){
 			nome = filtroPessoa;
 		}else if(filtroTipoPesquisaPessoa.equals("CPF")){
-			filtroPessoa = Util.removeMascaraGeral(filtroPessoa);
+			filtroPessoa = AlugueFacilUtil.removeMascaraGeral(filtroPessoa);
 			cpf = filtroPessoa;
 		}
 		inquilinoList = aluguelBean.pesquisarInquilino(nome, cpf);
@@ -197,7 +198,7 @@ public class AluguelMB extends MainMB implements Serializable {
 		filtroTipoPesquisaPessoa = "CPF";
 		filtroRuaPopup = null;
 		filtroNumeroPopup = null;
-		if (Util.validaListDefault(inquilinoList)) {
+		if (AlugueFacilUtil.validaListDefault(inquilinoList)) {
 			inquilinoList.clear();
 		}
 	}
@@ -205,7 +206,7 @@ public class AluguelMB extends MainMB implements Serializable {
 	public void acaoLimparPesquisaCasa() {
 		filtroBairroPopup = null;
 		filtroPessoa = null;
-		if (Util.validaListDefault(casaList)) {
+		if (AlugueFacilUtil.validaListDefault(casaList)) {
 			casaList.clear();
 		}
 	}
