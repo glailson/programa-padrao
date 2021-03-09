@@ -11,7 +11,6 @@
     <name>WildFly Quickstarts: projeto-padrao</name>
     <description>A starter Java EE 7 webapp project for use on JBoss WildFly / WildFly, generated from the jboss-javaee6-webapp archetype</description>
 
-
     <properties>
         <!-- Explicitly declaring the source encoding eliminates the following 
             message: -->

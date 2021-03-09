@@ -196,23 +196,36 @@ public class AlugueFacilUtil {
     
     static public String formataTelefone(String telefone){
 		StringBuffer temp = new StringBuffer();
-		if (telefone.length() >= 10) {
+		int tam = telefone.length();
+		if (telefone.length() == 11) {
 			temp.append("(");
 			temp.append(telefone.substring(0, 2));
 			temp.append(") ");
+			
+			if (telefone.length() > 10) {
+				temp.append(telefone.substring(2, 7));
+				temp.append("-");
+				temp.append(telefone.substring(7, 10));
+			}
+			
+			if (telefone.length() > 10) {
+				temp.append(telefone.substring(10, 11));
+			}
+		} 
+		if (tam == 10) {
+			temp.append("(");
+			temp.append(telefone.substring(0, 2));
+			temp.append(") ");
+			if (telefone.length() >= 8) {
+				temp.append(telefone.substring(2, 6));
+				temp.append("-");
+				temp.append(telefone.substring(6, 10));
+			}
 		}
-		if (telefone.length() >= 10) {
-			temp.append(telefone.substring(2, 7));
+		if (tam == 8) {
+			temp.append(telefone.substring(0, 4));
 			temp.append("-");
-			temp.append(telefone.substring(7, 10));
-		}
-		if (telefone.length() == 8) {
-			temp.append(telefone.substring(2, 6));
-			temp.append("-");
-			temp.append(telefone.substring(6, 10));
-		}
-		if (telefone.length() > 10) {
-			temp.append(telefone.substring(10, 11));
+			temp.append(telefone.substring(4, 8));
 		}
 		return temp.toString();
 	}
