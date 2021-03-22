@@ -18,6 +18,34 @@
     </h:head>
 
     <h:body style="background-color: #B0E0E6;">
+    <script>
+		PrimeFaces.locales['pt'] = {
+		        closeText: 'Fechar',
+		            prevText: 'Anterior',
+		            nextText: 'Próximo',
+		            currentText: 'Começo',
+		            monthNames: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],                         
+		            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+		            dayNames: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
+		            dayNamesShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'],
+		            dayNamesMin: ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'],
+		            weekHeader: 'Semana',
+		            firstDay: 1,
+		            isRTL: false,
+		            showMonthAfterYear: false,
+		            yearSuffix: '',
+		            timeOnlyTitle: 'Só Horas',
+		            timeText: 'Tempo',
+		            hourText: 'Hora',
+		            minuteText: 'Minuto',
+		            secondText: 'Segundo',
+		            ampm: false,
+		            month: 'Mês',
+		            week: 'Semana',
+		            day: 'Dia',
+		            allDayText: 'Todo Dia'
+		        };
+		</script>
 		<div id="page" >
 		    <div id="header" style="width: 960px; margin-left: 23%;">
 				 <p:menubar>
@@ -45,6 +73,10 @@
 			    </div>
 		    </h:form>
 	      </div>
+	      <p:confirmDialog global="true">
+	        <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
+	        <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
+	      </p:confirmDialog>
 
     </h:body>
 </html>
