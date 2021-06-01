@@ -158,6 +158,29 @@
 					<br/><h:outputText id="idObservacaoCount"/>
 				</p:row>
 			</h:panelGrid>
+			<p:outputPanel id="idUploadFoto">
+				<h:form enctype="multipart/form-data">
+					<p:outputLabel value="Upload " />
+					<p:fileUpload mode="advanced"
+					 	 auto = "true"
+	                     sizeLimit="102400" allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+	                     invalidSizeMessage="Tamanho máximo permitido 100 KB"
+	                     invalidFileMessage="apenas gif | jpg | jpeg | png são permitidos."
+	                     update="@root:@id(idUploadFoto)"
+	                     fileUploadListener="#{inquilinoMB.uploadFoto}"
+	                     process="@this"
+	                     multiple="true">
+	                     <p:growl id="idGrowl" showDetail="true" showSummary="false" autoUpdate="true" />
+                     </p:fileUpload>
+					
+				
+	                     
+	                <p:outputLabel  value="Foto " />
+					<p:graphicImage id="foto" value="#{imagemMB.foto}" style="height:200px;width:200px;" > 
+						<f:param name="caminho" value="#{inquilinoMB.inquilino.caminho}"  />
+					</p:graphicImage>
+				</h:form>
+			</p:outputPanel>
 			<p:outputPanel >
 				<hr />
 				<p:commandButton id="idBtVoltar" value="Voltar para Pesquisa" style="margin-top: 5px; border-top: 1px solid #d3d3d3; clear: both; width: 210px;"

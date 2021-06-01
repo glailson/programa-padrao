@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.Size;
 
 @Entity
@@ -49,6 +50,8 @@ public class Inquilino implements GenericEntity<Long> {
 	@Size(max=25)
     @Column(name="intelefonefiador")
     private String telefoneFiador;
+	@Transient
+	private String caminho;
 	
 	public Inquilino() {
 		// TODO Auto-generated constructor stub
@@ -137,6 +140,14 @@ public class Inquilino implements GenericEntity<Long> {
 
 	public String getTelefoneFiador() {
 		return telefoneFiador;
+	}
+
+	public String getCaminho() {
+		return caminho;
+	}
+
+	public void setCaminho(String caminho) {
+		this.caminho = caminho;
 	}
 
 	public void setTelefoneFiador(String telefoneFiador) {

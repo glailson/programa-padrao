@@ -1,16 +1,31 @@
 package br.com.controller;
 
+import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.Serializable;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 
+import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
+import org.primefaces.model.UploadedFile;
+
 import br.com.ejb.InquilinoBean;
-import br.com.model.Inquilino;
 import br.com.model.AlugueFacilUtil;
+import br.com.model.Inquilino;
 import br.com.model.resultset.InquilinoRS;
 
 @ManagedBean
@@ -26,6 +41,8 @@ public class InquilinoMB extends MainMB implements Serializable {
 	private InquilinoRS inquilinoSelecionadoRS;
 	private List<InquilinoRS> inquilinoRSList;
 	private String subTitulo, labelBtSalvar;
+	private UploadedFile uploadedFoto;
+	private String pastaUpload = "C:/Dese/uploads"; 
 	//FILTROS
 	private Long filtroCodigo;
 	private String filtroCpf, filtroNome;
@@ -78,13 +95,52 @@ public class InquilinoMB extends MainMB implements Serializable {
 	}
 	
 	public void acaoSalvar () {
-		inquilino = inquilinoBean.salvar(inquilino);
+		String caminhoTemp = inquilino.getCaminho();
+		try {
+			inquilino = inquilinoBean.salvar(inquilino);
+			if (AlugueFacilUtil.validaStringDefault(caminhoTemp)) {
+				Path origem = Paths.get(caminhoTemp);
+				Path destino = Paths.get(pastaUpload + "/inquilino_" + inquilino.getNumSequencial() + ".png" );
+				Files.copy(origem, destino, StandardCopyOption.REPLACE_EXISTING);
+			} 
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		if (isCadastrando()) {
 			addInfoMessage("Cadastro realizado com sucesso.");
 		} else {
 			addInfoMessage("Alterações salvas com sucesso.");
 		}
 		navVisualizar();
+	}
+	
+	public void uploadFoto(FileUploadEvent event) {
+		try {
+			uploadedFoto = event.getFile();
+			Path arquivoTemp = Files.createTempFile(null, null);
+			Files.copy(uploadedFoto.getInputstream(), arquivoTemp, StandardCopyOption.REPLACE_EXISTING);
+			inquilino.setCaminho(arquivoTemp.toString());
+			addInfoMessage("Upload da foto realizado com sucesso.");
+		} catch (IOException e) {
+			addErroMessage("Erro ao tentar realizar upload de foto.");
+			e.printStackTrace();
+		}
+	}
+	
+	public StreamedContent getFoto(){
+		System.out.println(pastaUpload + "/inquilino_" + inquilino.getNumSequencial() + ".png");
+		File foto = new File(pastaUpload + "/inquilino_" + inquilino.getNumSequencial() + ".png");
+	    DefaultStreamedContent content=null;
+	    try{
+	        BufferedInputStream in=new BufferedInputStream(new FileInputStream(foto));
+	        byte[] bytes=new byte[in.available()];
+	        in.read(bytes);
+	        in.close();
+	        content = new DefaultStreamedContent(new ByteArrayInputStream(bytes));
+	    }catch(IOException e){
+	        e.printStackTrace();;
+	    }
+	    return content;
 	}
 	
 	public void navVisualizar() {
